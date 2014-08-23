@@ -41,7 +41,38 @@
 			}
 		};
 	};
+
+	$.fn.rebind = function(evtName,fn,scope,data) {
+		var evtName = getPlatformEventName(evtName);
+		fn = fn || function() {};
+		var me = $(this);
+		scope = scope || me;
+		//解除绑定
+		me.unbind(evtName);
+		me.on(evtName, function(evt) {
+			fn.apply(scope, [evt, me, data]);
+			return false;
+		});
+
+		//获得兼容PC事件名称
+		function getPlatformEventName(evtName) {
+			var evtNames = {
+				"tap": "click",
+				"touchstart": "mousedown",
+				"touchmove": "mousemove",
+				"touchend": "mouseup",
+				"doubleTap": "dblclick",
+				"longTap": "dblclick"
+			};
+			if (Base.isMobilePlatform) {
+				return evtName;
+			} else {
+				return evtNames[evtName] || evtName;
+			}
+		};
+	};
 })(Zepto);
+
 
 (function(window) {
 	var global = this;

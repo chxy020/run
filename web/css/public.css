@@ -88,3 +88,34 @@ a:active { color: #6d7579; }
 .p_distance { font-size:20px; color:#000; text-align:center; }
 .d-time p { font-size:20px; }
 .inputDiv input, .prompt, .c_teamlist, .searchmy input, .p_distance, .p_prompt, .login-btn li p span, .login-btn li:last-child, .d-time s, .d-time, .header_text, .teamlist li p, .h-btn li { font-family:"Microsoft YaHei"; }
+
+
+
+
+.rp_tishi span {
+	font-family:"Microsoft YaHei"
+}
+
+.rp_tishi {
+	position:absolute;
+	bottom:70px;
+	text-align:center;
+	z-index:99;width:100%;
+}
+.rp_tishi span {
+	display:inline-block;
+	margin:0 20px;
+	background-color:rgba(0, 0, 0, 0.8);
+	border:1px solid rgba(0, 0, 0, 0.6);
+	color:#FFF;
+	padding:8px 10px;
+	-webkit-border-radius:3px;
+	-moz-border-radius:3px;
+	border-radius:3px;
+	-webkit-box-shadow:0px 0px 8px rgba(0, 0, 0, .9);
+	box-shadow:0 0 8px rgba(0, 0, 0, .9);
+	line-height:120%;
+	white-space:pre-wrap;
+	word-wrap:break-word;
+	word-break:break-all;
+}

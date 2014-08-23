@@ -87,43 +87,7 @@ PageManager.prototype = {
 	 * 初始化滚动插件
 	*/
 	initiScroll:function(){
-		if(this.iScrollX == null){
-			/*
-			//动态调整滚动插件宽高,
-			var w = this.bodyWidth;
-			//console.log(w)
-			// var h = this.bodyHeight + "px";
-			 var iw = w * 3;
-
-			//this.iScroller[0].style.cssText = "";
-			$("#viewport").css({"width":w + "px"});
-			$("#scroller").css({"width":iw + "px"});
-			$(".slide").css({"width":w + "px"});
-			$(".scroller").css({"width":w + "px"});
-			*/
-
-			this.iScrollX = new IScroll('#wrapper',{
-				scrollX:true,
-				scrollY:true,
-				momentum:false,
-				snap:true,
-				snapSpeed:400,
-				scope:this
-			});
-
-			this.iScrollX.on('scrollEnd',function(){
-				var scope = this.options.scope;
-				var index = scope.cityIndex;
-				
-				var pageX = this.currentPage.pageX;
-				if(index != pageX){
-					var indicator = $("#indicator > li");
-					indicator.removeClass("active");
-					var li = indicator[pageX];
-					li.className = "active";
-				}
-			});
-		}
+		
 	},
 
 	/*
@@ -133,14 +97,15 @@ PageManager.prototype = {
 		var options = {};
 		//上报类型 1 手机端 2网站
 		options.stype = 1;
-		//组ID
-		options.gid = 7;
 		//用户ID,未注册用户无此属性，如果有此属性后台服务会执行用户与设备匹配验证
 		options.uid = "132";
 		//比赛id,现在只有一个比赛 值=1
 		options.mid = 1;
+		//组ID
+		options.gid = 7;
 		//客户端唯一标识
 		options["X-PID"] = "tre211";
+		
 		var reqUrl = this.bulidSendUrl("/match/deletegroup.htm",options);
 		console.log(reqUrl);
 		
@@ -151,10 +116,15 @@ PageManager.prototype = {
 				console.log(data);
 				var state = data.state.code - 0;
 				if(state === 0){
+					$("#backBtn").unbind("touchend");
+					Base.alert("跑队解散成功!");
+					setTimeout(function(){
+						Base.pageBack(-2);
+					},2000);
 				}
 				else{
-					//var msg = data.state.desc + "(" + state + ")";
-					//Base.alert(msg);
+					var msg = data.state.desc + "(" + state + ")";
+					Base.alert(msg);
 				}
 			}
 		});
@@ -221,16 +191,6 @@ PageManager.prototype = {
 		if(!this.moved){
 			$("#servertip").hide();
 			this.isTipShow = false;
-			this.getPoiDetail();
-			/*
-			if(this.retrytype == "getPoiDetail"){
-				this.getPoiDetail();
-				this.$shareBox.hide();
-				$(this.meetBtn).hide();
-			}else if(this.retrytype == "getAibangServerData"){
-				this.getAibangServerData();
-			}
-			*/
 		}
 	},
 	

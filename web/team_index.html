@@ -85,13 +85,35 @@
 		</div>
 	</div>
 
-
-	<div class="d-time">
-		距比赛还有：<span>18</span><s>天</s><span>52</span><s>时</s><span>25</span><s>分</s><span>42</span><s>秒</s>
+	<!-- 比赛倒计时/进行时 -->
+	<div id="playTimeDiv" class="d-time">
+		距比赛还有：<span>0</span><s>天</s><span>0</span><s>时</s><span>0</span><s>分</s><span>0</span><s>秒</s>
 	</div>
-	<p class="p_prompt">2014年北京要跑24小时接力赛组队阶段已结束，跑队成员已不可变更。</p>
 
-	<ul class="teamlist login-btn">
+	<!--比赛状态说明 -->
+	<p id="playStatus" class="p_prompt" style="display:none;"></p>
+	
+	<!--比赛距离-->
+	<div id="distanceDiv" style="display:none;">
+	</div>
+	
+	<ul id="teamList" class="teamlist" style="display:none;">
+		
+	</ul>
+
+	<!-- 未组队显示创建/加入跑队
+	<ul id="addTeam" class="teamlist login-btn" style="display:none;">
+		<li>
+			<div class="head-img"><img src="images/head-img.jpg" alt="" width="36" height="36"></div>
+			<p>
+				<span>用户昵称</span>
+			</p>
+		</li>
+		<li id="addTeamBtn">创建/加入跑队</li>
+	</ul>
+	-->
+	<!-- 跑队设置 
+	<ul id="setupTeam" class="teamlist login-btn" style="display:none;">
 		<li>
 			<div class="head-img"><img src="images/head-img.jpg" alt="" width="36" height="36"></div>
 			<p>
@@ -101,7 +123,20 @@
 		</li>
 		<li id="teamSetupBtn" >跑队设置</li>
 	</ul>
-	
+	-->
+	<!-- 未组队显示用户昵称,跑队名称 
+	<ul id="showTeam" class="teamlist" style="display:none;">
+		<li>
+			<span class="baton">接力棒</span>
+			<div class="head-img"><img src="images/head-img.jpg" alt="" width="36" height="36"></div>
+			<p>
+				<span>用户昵称</span>
+				<span>所属跑队名称</span>
+			</p>
+		</li>
+	</ul>
+	-->
+
 	<script type="text/javascript" src="libs/iscroll5.js"></script>
 	<script type="text/javascript" src="libs/zepto.js"></script>
 	<script type="text/javascript" src="libs/gmu.js"></script>

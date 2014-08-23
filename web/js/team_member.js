@@ -20,7 +20,7 @@ var PageManager = function (obj){
 
 PageManager.prototype = {
 	constructor:PageManager,
-	iScrollX:null,
+	iScrollY:null,
 	httpId:null,
 	//页面宽度
 	bodyWidth:0,
@@ -62,6 +62,7 @@ PageManager.prototype = {
 		Base.pageBack(-1);
 	},
 	pageMove:function(evt){
+		evt.preventDefault();
 		this.moved = true;
 	},
 	
@@ -161,7 +162,7 @@ PageManager.prototype = {
 	 * 初始化滚动插件
 	*/
 	initiScroll:function(){
-		if(this.iScrollX == null){
+		if(this.iScrollY == null){
 			/*
 			//动态调整滚动插件宽高,
 			var w = this.bodyWidth;
@@ -175,28 +176,16 @@ PageManager.prototype = {
 			$(".slide").css({"width":w + "px"});
 			$(".scroller").css({"width":w + "px"});
 			*/
-
-			this.iScrollX = new IScroll('#wrapper',{
-				scrollX:true,
-				scrollY:true,
-				momentum:false,
-				snap:true,
-				snapSpeed:400,
-				scope:this
+			this.iScrollY = new IScroll('#wrapper', {
+				scrollbars: true,
+				mouseWheel: true,
+				interactiveScrollbars: true,
+				shrinkScrollbars: 'scale',
+				fadeScrollbars: true
 			});
-
-			this.iScrollX.on('scrollEnd',function(){
-				var scope = this.options.scope;
-				var index = scope.cityIndex;
-				
-				var pageX = this.currentPage.pageX;
-				if(index != pageX){
-					var indicator = $("#indicator > li");
-					indicator.removeClass("active");
-					var li = indicator[pageX];
-					li.className = "active";
-				}
-			});
+		}
+		else{
+			this.iScrollY.refresh();
 		}
 	},
 	
@@ -207,22 +196,21 @@ PageManager.prototype = {
 		var options = {};
 		//上报类型 1 手机端 2网站
 		options.stype = 1;
+		//用户ID,
+		options.uid = "132";
 		//组ID
 		options.gid = 7;
-		//第几页
-		options.cpage = 1;
-		//每页多少条
-		options.pagesize = 10;
-		//用户ID,未注册用户无此属性，如果有此属性后台服务会执行用户与设备匹配验证
-		options.uid = "132";
 		//比赛id,现在只有一个比赛 值=1
 		//options.mid = 1;
 		//客户端唯一标识
 		options["X-PID"] = "tre211";
+		//第几页
+		options.cpage = 1;
+		//每页多少条
+		options.pagesize = 30;
+		
 		var reqUrl = this.bulidSendUrl("/match/querygroupry.htm",options);
 		console.log(reqUrl);
-		
-		
 		
 		$.ajaxJSONP({
 			url:reqUrl,
@@ -235,10 +223,8 @@ PageManager.prototype = {
 					this.changeMemberHtml(data);
 				}
 				else{
-					//var msg = data.state.desc + "(" + state + ")";
-					//Base.alert(msg);
-					var data = {"annoneimg":"http://182.92.97.144:8080/chSports/image/20140730/120_40BC81A017B611E4B1CB9B7C1599F3DC.jpg","annoneurl":"http://www.sohu.com","annthreeimg":"http://182.92.97.144:8080/chSports/image/20140730/120_40BC338017B611E4B1CBE6607330F3AA.jpg","annthreeurl":"http://www.163.com","anntwoimg":"http://182.92.97.144:8080/chSports//image/20140731/120_5D4A5EC017D711E49EC0E636B1764AE2.jpg","anntwourl":"http://www.sina.com","endtime":"2014-08-14 16:11:44","issign":1,"mid":1,"mname":"董老板的蜗牛赛","signendtime":"2015-06-08 16:05:59","signstarttime":"2014-06-08 16:05:59","signstate":1,"starttime":"2014-08-13 16:11:35","state":{"code":0,"desc":"请求成功"}};
-					this.changeSlideImage(data);
+					var msg = data.state.desc + "(" + state + ")";
+					Base.alert(msg);
 				}
 			}
 		});
@@ -261,8 +247,8 @@ PageManager.prototype = {
 				var isleader = list.isleader - 0 || 0;
 				var nickname = list.nickname || "昵称";
 				//头像
-				var imgpath = list.imgpath || "images/head-img.jpg";
-				if(imgpath != "images/head-img.jpg"){
+				var imgpath = list.imgpath || "images/default-head-img.jpg";
+				if(imgpath != "images/default-head-img.jpg"){
 					imgpath = Base.ServerUrl + imgpath;
 				}
 
@@ -280,9 +266,7 @@ PageManager.prototype = {
 			}
 
 			$("#memberList").append(ul.join(''));
-
-			$("#memberList > li").onbind("touchstart",this.btnDown,this);
-			$("#memberList > li").onbind("touchend",this.itemUp,this);
+			this.initiScroll();
 		}
 	},
 

@@ -36,6 +36,9 @@ PageManager.prototype = {
 		$("#backBtn").onbind("touchstart",this.btnDown,this);
 		$("#backBtn").onbind("touchend",this.pageBack,this);
 
+		//离开文本框事件
+		$("#newPwd").onbind("blur",this.newPwdBlur,this);
+
 		//修改密码
 		$("#updatePwdBtn").onbind("touchstart",this.btnDown,this);
 		$("#updatePwdBtn").onbind("touchend",this.updatePwdBtnUp,this);
@@ -69,6 +72,19 @@ PageManager.prototype = {
 	},
 
 	/*
+	 * 离开新密码文件框验证密码
+	*/
+	newPwdBlur:function(evt){
+		var newPwd = $("#newPwd");
+		var pwd = newPwd.val();
+		var reg = /^([0-9]|[a-z]|[A-Z]){6,16}$/;
+		if(!reg.test(pwd)){
+			Base.alert("新密码格式错误!");
+			newPwd[0].focus();
+		}
+	},
+
+	/*
 	 * 修改密码
 	*/
 	updatePwdBtnUp:function(evt){
@@ -78,7 +94,15 @@ PageManager.prototype = {
 		},Base.delay);
 		if(!this.moved){
 			//修改密码
-			
+			var oldPwd = $("#oldPwd").val();
+			var newPwd = $("#newPwd").val();
+			var reg = /^([0-9]|[a-z]|[A-Z]){6,16}$/;
+			if(reg.test(newPwd)){
+				this.setTeamNewPwd(oldPwd,newPwd);
+			}
+			else{
+				Base.alert("新密码格式错误!");
+			}
 		}
 		else{
 			$(ele).removeClass("curr");
@@ -89,68 +113,26 @@ PageManager.prototype = {
 	 * 初始化滚动插件
 	*/
 	initiScroll:function(){
-		if(this.iScrollX == null){
-			/*
-			//动态调整滚动插件宽高,
-			var w = this.bodyWidth;
-			//console.log(w)
-			// var h = this.bodyHeight + "px";
-			 var iw = w * 3;
-
-			//this.iScroller[0].style.cssText = "";
-			$("#viewport").css({"width":w + "px"});
-			$("#scroller").css({"width":iw + "px"});
-			$(".slide").css({"width":w + "px"});
-			$(".scroller").css({"width":w + "px"});
-			*/
-
-			this.iScrollX = new IScroll('#wrapper',{
-				scrollX:true,
-				scrollY:true,
-				momentum:false,
-				snap:true,
-				snapSpeed:400,
-				scope:this
-			});
-
-			this.iScrollX.on('scrollEnd',function(){
-				var scope = this.options.scope;
-				var index = scope.cityIndex;
-				
-				var pageX = this.currentPage.pageX;
-				if(index != pageX){
-					var indicator = $("#indicator > li");
-					indicator.removeClass("active");
-					var li = indicator[pageX];
-					li.className = "active";
-				}
-			});
-		}
 	},
 	
 	/*
 	 * 修改密码
 	*/
-	setTeamNewPwd:function(){
+	setTeamNewPwd:function(oldPwd,newPwd){
 		var options = {};
 		//上报类型 1 手机端 2网站
 		options.stype = 1;
+		//用户ID
+		options.uid = "132";
 		//组ID
 		options.gid = 7;
-		//第几页
-		options.cpage = 1;
-		//每页多少条
-		options.pagesize = 10;
-		//用户ID,未注册用户无此属性，如果有此属性后台服务会执行用户与设备匹配验证
-		options.uid = "132";
 		//比赛id,现在只有一个比赛 值=1
-		//options.mid = 1;
+		options.mid = 1;
 		//客户端唯一标识
 		options["X-PID"] = "tre211";
-		var reqUrl = this.bulidSendUrl("/match/querygroupry.htm",options);
+		
+		var reqUrl = this.bulidSendUrl("/match/changepassword.htm",options);
 		console.log(reqUrl);
-		
-		
 		
 		$.ajaxJSONP({
 			url:reqUrl,
@@ -163,14 +145,11 @@ PageManager.prototype = {
 					this.changeMemberHtml(data);
 				}
 				else{
-					//var msg = data.state.desc + "(" + state + ")";
-					//Base.alert(msg);
-					var data = {"annoneimg":"http://182.92.97.144:8080/chSports/image/20140730/120_40BC81A017B611E4B1CB9B7C1599F3DC.jpg","annoneurl":"http://www.sohu.com","annthreeimg":"http://182.92.97.144:8080/chSports/image/20140730/120_40BC338017B611E4B1CBE6607330F3AA.jpg","annthreeurl":"http://www.163.com","anntwoimg":"http://182.92.97.144:8080/chSports//image/20140731/120_5D4A5EC017D711E49EC0E636B1764AE2.jpg","anntwourl":"http://www.sina.com","endtime":"2014-08-14 16:11:44","issign":1,"mid":1,"mname":"董老板的蜗牛赛","signendtime":"2015-06-08 16:05:59","signstarttime":"2014-06-08 16:05:59","signstate":1,"starttime":"2014-08-13 16:11:35","state":{"code":0,"desc":"请求成功"}};
-					this.changeSlideImage(data);
+					var msg = data.state.desc + "(" + state + ")";
+					Base.alert(msg);
 				}
 			}
 		});
-		/**/
 	},
 
 	/**
@@ -234,15 +213,6 @@ PageManager.prototype = {
 			$("#servertip").hide();
 			this.isTipShow = false;
 			this.getPoiDetail();
-			/*
-			if(this.retrytype == "getPoiDetail"){
-				this.getPoiDetail();
-				this.$shareBox.hide();
-				$(this.meetBtn).hide();
-			}else if(this.retrytype == "getAibangServerData"){
-				this.getAibangServerData();
-			}
-			*/
 		}
 	},
 	

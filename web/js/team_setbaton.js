@@ -20,7 +20,7 @@ var PageManager = function (obj){
 
 PageManager.prototype = {
 	constructor:PageManager,
-	iScrollX:null,
+	iScrollY:null,
 	httpId:null,
 	//页面宽度
 	bodyWidth:0,
@@ -54,6 +54,7 @@ PageManager.prototype = {
 		Base.pageBack(-1);
 	},
 	pageMove:function(evt){
+		evt.preventDefault();
 		this.moved = true;
 	},
 	
@@ -74,18 +75,16 @@ PageManager.prototype = {
 	 * 选择队员设置
 	*/
 	itemUp:function(evt){
+		evt.preventDefault();
 		var ele = evt.currentTarget;
+		var dom = $(ele);
+		dom.addClass("curr");
+
 		setTimeout(function(){
-			$(ele).removeClass("curr");
-		},Base.delay);
-		if(!this.moved){
+			dom.removeClass("curr");
 			$("#memberList > li").removeClass("curr_d");
-			$(ele).addClass("curr_d");
-			//var id = ele.id.split("_")[1];
-		}
-		else{
-			$(ele).removeClass("curr");
-		}
+			dom.addClass("curr_d");
+		},Base.delay);
 	},
 
 	/*
@@ -119,42 +118,19 @@ PageManager.prototype = {
 	 * 初始化滚动插件
 	*/
 	initiScroll:function(){
-		if(this.iScrollX == null){
-			/*
-			//动态调整滚动插件宽高,
-			var w = this.bodyWidth;
-			//console.log(w)
-			// var h = this.bodyHeight + "px";
-			 var iw = w * 3;
-
-			//this.iScroller[0].style.cssText = "";
-			$("#viewport").css({"width":w + "px"});
-			$("#scroller").css({"width":iw + "px"});
-			$(".slide").css({"width":w + "px"});
-			$(".scroller").css({"width":w + "px"});
-			*/
-
-			this.iScrollX = new IScroll('#wrapper',{
-				scrollX:true,
-				scrollY:true,
-				momentum:false,
-				snap:true,
-				snapSpeed:400,
-				scope:this
+		if(this.iScrollY == null){
+			this.iScrollY = new IScroll('#wrapper', {
+				scrollbars: true,
+				mouseWheel: true,
+				click: true,
+				//click: true,
+				interactiveScrollbars: true,
+				shrinkScrollbars: 'scale',
+				fadeScrollbars: true
 			});
-
-			this.iScrollX.on('scrollEnd',function(){
-				var scope = this.options.scope;
-				var index = scope.cityIndex;
-				
-				var pageX = this.currentPage.pageX;
-				if(index != pageX){
-					var indicator = $("#indicator > li");
-					indicator.removeClass("active");
-					var li = indicator[pageX];
-					li.className = "active";
-				}
-			});
+		}
+		else{
+			this.iScrollY.refresh();
 		}
 	},
 	
@@ -165,22 +141,21 @@ PageManager.prototype = {
 		var options = {};
 		//上报类型 1 手机端 2网站
 		options.stype = 1;
+		//用户ID,
+		options.uid = "132";
 		//组ID
 		options.gid = 7;
-		//第几页
-		options.cpage = 1;
-		//每页多少条
-		options.pagesize = 10;
-		//用户ID,未注册用户无此属性，如果有此属性后台服务会执行用户与设备匹配验证
-		options.uid = "132";
 		//比赛id,现在只有一个比赛 值=1
 		//options.mid = 1;
 		//客户端唯一标识
 		options["X-PID"] = "tre211";
+		//第几页
+		options.cpage = 1;
+		//每页多少条
+		options.pagesize = 30;
+
 		var reqUrl = this.bulidSendUrl("/match/querygroupry.htm",options);
 		console.log(reqUrl);
-		
-		
 		
 		$.ajaxJSONP({
 			url:reqUrl,
@@ -193,8 +168,8 @@ PageManager.prototype = {
 					this.changeMemberHtml(data);
 				}
 				else{
-					//var msg = data.state.desc + "(" + state + ")";
-					//Base.alert(msg);
+					var msg = data.state.desc + "(" + state + ")";
+					Base.alert(msg);
 				}
 			}
 		});
@@ -208,12 +183,12 @@ PageManager.prototype = {
 		var options = {};
 		//上报类型 1 手机端 2网站
 		options.stype = 1;
-		//组ID
-		options.gid = 7;
 		//用户ID,未注册用户无此属性，如果有此属性后台服务会执行用户与设备匹配验证
 		options.uid = "132";
+		//组ID
+		options.gid = 7;
 		//比赛id,现在只有一个比赛 值=1
-		//options.mid = 1;
+		options.mid = 1;
 		//设置第一棒人员uid
 		options.batid = uid;
 		//客户端唯一标识
@@ -228,12 +203,11 @@ PageManager.prototype = {
 				console.log(data);
 				var state = data.state.code - 0;
 				if(state === 0){
-					this.memberData = data;
-					this.changeMemberHtml(data);
+					Base.alert("第一棒设置成功");
 				}
 				else{
-					//var msg = data.state.desc + "(" + state + ")";
-					//Base.alert(msg);
+					var msg = data.state.desc + "(" + state + ")";
+					Base.alert(msg);
 				}
 			}
 		});
@@ -273,8 +247,9 @@ PageManager.prototype = {
 
 			$("#memberList").append(ul.join(''));
 
-			$("#memberList > li").onbind("touchstart",this.btnDown,this);
-			$("#memberList > li").onbind("touchend",this.itemUp,this);
+			$("#memberList > li").onbind("click",this.itemUp,this);
+
+			this.initiScroll();
 		}
 	},
 
