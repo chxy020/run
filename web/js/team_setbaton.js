@@ -123,7 +123,7 @@ PageManager.prototype = {
 				scrollbars: true,
 				mouseWheel: true,
 				click: true,
-				//click: true,
+				tap: true,
 				interactiveScrollbars: true,
 				shrinkScrollbars: 'scale',
 				fadeScrollbars: true

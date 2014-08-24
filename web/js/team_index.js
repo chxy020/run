@@ -88,7 +88,7 @@ PageManager.prototype = {
 			if(type !== ""){
 				if(type == "setup"){
 					//跳转到跑队设置
-					var isleader = 0;
+					var isleader = 1;
 					if(isleader){
 						//领队跳转队员页面
 						Base.toPage("team_member.html");
