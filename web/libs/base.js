@@ -377,14 +377,14 @@
 	"pid": 353617052835307 //用户PID
 	}
 	*/
-	function getMyInfo() {
-		var myInfoStr = offlineStore.get("traffic_myinfo");
+	function getLocalInfo() {
+		var myInfoStr = offlineStore.get("_localuserinfo");
 		return str2Json(myInfoStr);
 	};
 
 	//判断URL是否存在
 	function pageUrlIndex(url){
-		var pageUrl = offlineStore.get("traffic_pageurl",true) || "";
+		var pageUrl = offlineStore.get("web_pageurl",true) || "";
 		if(pageUrl == ""){
 			pageUrl = [];
 		}
@@ -396,7 +396,7 @@
 			//页面没有加载过
 			pageUrl.unshift(url);
 			var jsonStr = json2Str(pageUrl);
-			offlineStore.set("traffic_pageurl",jsonStr,true);
+			offlineStore.set("web_pageurl",jsonStr,true);
 			//标识load页面
 			return 99;
 		}
@@ -406,7 +406,7 @@
 	//返回
 	function pageBack(index){
 		var i = index;
-		var pageUrl = offlineStore.get("traffic_pageurl",true) || "";
+		var pageUrl = offlineStore.get("web_pageurl",true) || "";
 		if(pageUrl == ""){
 			pageUrl = [];
 		}
@@ -418,7 +418,7 @@
 			i++;
 		}
 		var jsonStr = json2Str(pageUrl);
-		offlineStore.set("traffic_pageurl",jsonStr,true);
+		offlineStore.set("web_pageurl",jsonStr,true);
 		history.go(index);
 	};
 
@@ -464,7 +464,7 @@
 
 	Base.httpData2Str = httpData2Str;
 	Base.offlineStore = offlineStore;
-	Base.getMyInfo = getMyInfo;
+	Base.getLocalDataInfo = getLocalInfo;
 
 	Base.json2Str = json2Str;
 	Base.str2Json = str2Json;

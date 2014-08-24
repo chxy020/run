@@ -26,6 +26,8 @@ PageManager.prototype = {
 	bodyWidth:0,
 	//队员数据
 	memberData:null,
+	//用户数据
+	localUserInfo:{},
 	init: function(){
 		$(window).onbind("load",this.pageLoad,this);
 		$(window).onbind("touchmove",this.pageMove,this);
@@ -36,9 +38,7 @@ PageManager.prototype = {
 		$("#backBtn").onbind("touchstart",this.btnDown,this);
 		$("#backBtn").onbind("touchend",this.pageBack,this);
 
-		//退出跑队
-		$("#quitBtn").onbind("touchstart",this.btnDown,this);
-		$("#quitBtn").onbind("touchend",this.quitBtnUp,this);
+		
 		
 	},
 	pageLoad:function(evt){
@@ -47,7 +47,9 @@ PageManager.prototype = {
 		//this.ratio = window.devicePixelRatio || 1;
 		this.bodyWidth = w;
 		//this.bodyHeight = h;
-
+		//获取本地用户数据
+		this.localUserInfo = Base.getLocalDataInfo();
+		this.initLoadHtml();
 		//请求队员列表
 		this.getTeamMemberList();
 	},
@@ -112,17 +114,22 @@ PageManager.prototype = {
 	 * 请求跑队队员列表
 	*/
 	getTeamMemberList:function(){
+		var local = this.localUserInfo;
+		var user = local.userinfo || {};
+		var play = local.playinfo || {};
+		var device = local.deviceinfo || {};
+
 		var options = {};
 		//上报类型 1 手机端 2网站
 		options.stype = 1;
 		//用户ID,
-		options.uid = "132";
+		options.uid = user.uid || "";
 		//组ID
-		options.gid = 7;
+		options.gid = user.gid || "";
 		//比赛id,现在只有一个比赛 值=1
 		//options.mid = 1;
 		//客户端唯一标识
-		options["X-PID"] = "tre211";
+		options["X-PID"] = device.deviceid || "";
 		//第几页
 		options.cpage = 1;
 		//每页多少条
@@ -191,6 +198,29 @@ PageManager.prototype = {
 		}
 	},
 
+	/*
+	 * 根据不同的用户状态和比赛状态动态显示页面
+	*/
+	initLoadHtml:function(){
+		var status = Base.offlineStore.get("playstatus",true) - 0;
+		console.log(status)
+		switch(status){
+			case 1:
+				//组队阶段
+				$("#wrapper").css("bottom","40px");
+				$("#groupStatus").show();
+
+				//退出跑队
+				$("#quitBtn").rebind("touchstart",this.btnDown,this);
+				$("#quitBtn").rebind("touchend",this.quitBtnUp,this);
+			break;
+			case 2:
+				//设置第一棒阶段
+				$("#wrapper").css("bottom","0px");
+				$("#groupStatus").hide();
+			break;
+		}
+	},
 
 	/**
 	 * 生成请求地址

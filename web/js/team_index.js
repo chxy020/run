@@ -30,6 +30,8 @@ PageManager.prototype = {
 	//当前比赛状态,报名阶段 - 组队阶段 - 设置第一棒阶段(赛前一小时) - 1小时倒计时进入比赛 - 比赛阶段 - 赛后阶段
 	//0-5
 	playStatus:0,
+	//用户数据
+	localUserInfo:{},
 	init: function(){
 		$(window).onbind("load",this.pageLoad,this);
 		$(window).onbind("touchmove",this.pageMove,this);
@@ -48,6 +50,7 @@ PageManager.prototype = {
 		this.bodyWidth = w;
 		//this.bodyHeight = h;
 
+		/*
 		//更新比赛状态/用户状态初始化页面
 		this.userStatus = 3;
 		this.playStatus = 2;
@@ -55,6 +58,7 @@ PageManager.prototype = {
 
 		//请求比赛状态
 		this.getCompetitionStatus();
+		*/
 	},
 	pageBack:function(evt){
 		Base.pageBack(-1);
@@ -69,6 +73,20 @@ PageManager.prototype = {
 	pageHide:function(){
 	},
 	
+	/*
+	 * 平台启动页面初始化参数
+	*/
+	initPageManager:function(){
+		this.localUserInfo = Base.getLocalDataInfo();
+
+		//更新比赛状态/用户状态初始化页面
+		this.userStatus = this.countUserStatus();
+		this.playStatus = this.countPlayStatus();
+		this.initLoadHtml();
+
+		//请求比赛状态
+		this.getCompetitionStatus();
+	},
 	btnDown:function(evt){
 		//按钮按下通用高亮效果
 		this.moved = false;
@@ -87,11 +105,25 @@ PageManager.prototype = {
 			var type = $(ele).attr("data") || "";
 			if(type !== ""){
 				if(type == "setup"){
+					//保存当前比赛状态
+					Base.offlineStore.set("playstatus",this.playStatus,true);
+					
 					//跳转到跑队设置
-					var isleader = 1;
+					var isleader = this.localUserInfo.userinfo.isleader - 0 || 0;
 					if(isleader){
 						//领队跳转队员页面
 						Base.toPage("team_member.html");
+						/*
+						if(this.playStatus == 2){
+							//直接跳转到设置第一棒
+							//跳转到设置第一棒
+							Base.toPage("team_setbaton.html");
+						}
+						else{
+							//领队跳转队员页面
+							Base.toPage("team_member.html");
+						}
+						*/
 					}
 					else{
 						//非领队跳转队员页面
@@ -204,6 +236,13 @@ PageManager.prototype = {
 		//比赛状态
 		var ps = this.playStatus;
 
+		var local = this.localUserInfo;
+		var user = local.userinfo || {};
+		//用户昵称
+		var nikeName = user.nikename || "用户昵称";
+		//跑队名称
+		var groupName = user.groupname || "跑队名称";
+
 		//显示比赛倒计时和进行时
 		if(ps == 5){
 			//结束比赛,隐藏时间
@@ -261,7 +300,7 @@ PageManager.prototype = {
 		if(us == 2 && (ps == 0 || ps == 1 || ps == 2)){
 			//显示创建/加入跑队
 			html.push('<li>');
-			html.push('<div class="head-img"><img src="images/head-img.jpg" alt="" width="36" height="36"></div>');
+			html.push('<div class="head-img"><img src="images/default-head-img.jpg" alt="" width="36" height="36"></div>');
 			html.push('<p>');
 			html.push('<span>用户昵称</span>');
 			html.push('</p>');
@@ -272,10 +311,10 @@ PageManager.prototype = {
 		else if(us == 3 && (ps == 0 || ps == 1 || ps == 2)){
 			//显示设置跑队
 			html.push('<li>');
-			html.push('<div class="head-img"><img src="images/head-img.jpg" alt="" width="36" height="36"></div>');
+			html.push('<div class="head-img"><img src="images/default-head-img.jpg" alt="" width="36" height="36"></div>');
 			html.push('<p>');
-			html.push('<span>用户昵称</span>');
-			html.push('<span>所属跑队名称</span>');
+			html.push('<span>' + nikeName + '</span>');
+			html.push('<span>' + groupName + '</span>');
 			html.push('</p>');
 			html.push('</li>');
 			html.push('<li id="_teamBtn" data="setup">跑队设置</li>');
@@ -285,7 +324,7 @@ PageManager.prototype = {
 			//显示跑队名称
 			html.push('<li>');
 			html.push('<span class="baton">接力棒</span>');
-			html.push('<div class="head-img"><img src="images/head-img.jpg" alt="" width="36" height="36"></div>');
+			html.push('<div class="head-img"><img src="images/default-head-img.jpg" alt="" width="36" height="36"></div>');
 			html.push('<p>');
 			html.push('<span>用户昵称</span>');
 			html.push('<span>所属跑队名称</span>');
@@ -360,6 +399,21 @@ PageManager.prototype = {
 		html.push('<p class="p_km">' + km + '<span>KM</span></p>');
 		html.push('<p class="p_distance">比塞总距离</p>');
 		return html.join('');
+	},
+
+	/*
+	 * 计算用户当前状态
+	*/
+	countUserStatus:function(){
+
+		return 3;
+	},
+
+	/*
+	 * 计算比赛当前状态
+	*/
+	countPlayStatus:function(){
+		return 2;
 	},
 
 	/**

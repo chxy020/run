@@ -10,10 +10,6 @@
 */
 
 var PageManager = function (obj){
-	//继承父类 公用事件
-	//TirosBase.apply(this,arguments);
-	//继承父类 公用函数
-	//TirosTools.apply(this,arguments);
 	this.init.apply(this,arguments);
 };
 
@@ -35,18 +31,6 @@ PageManager.prototype = {
 		//返回按钮事件
 		$("#backBtn").onbind("touchstart",this.btnDown,this);
 		$("#backBtn").onbind("touchend",this.pageBack,this);
-
-		//修改密码
-		$("#updatePwdBtn").onbind("touchstart",this.btnDown,this);
-		$("#updatePwdBtn").onbind("touchend",this.updatePwdBtnUp,this);
-		
-		//从队中移除跑友/选择第一棒
-		$("#memberSetupBtn > li").onbind("touchstart",this.btnDown,this);
-		$("#memberSetupBtn > li").onbind("touchend",this.memberSetupBtnUp,this);
-
-		//解散跑队
-		$("#disbandBtn").onbind("touchstart",this.btnDown,this);
-		$("#disbandBtn").onbind("touchend",this.disbandBtnUp,this);
 	},
 	pageLoad:function(evt){
 		var w = $(window).width();
@@ -54,6 +38,11 @@ PageManager.prototype = {
 		//this.ratio = window.devicePixelRatio || 1;
 		this.bodyWidth = w;
 		//this.bodyHeight = h;
+
+		//获取本地用户数据
+		this.localUserInfo = Base.getLocalDataInfo();
+		//根据状态初始化页面
+		this.initLoadHtml();
 
 		//请求队员列表
 		this.getTeamMemberList();
@@ -131,6 +120,7 @@ PageManager.prototype = {
 					Base.toPage("team_removemember.html");
 				break
 				case "select":
+				case "selectFirstBtn":
 					//跳转到设置第一棒
 					Base.toPage("team_setbaton.html");
 				break;
@@ -193,17 +183,21 @@ PageManager.prototype = {
 	 * 请求跑队队员列表
 	*/
 	getTeamMemberList:function(){
+		var local = this.localUserInfo;
+		var user = local.userinfo || {};
+		var device = local.deviceinfo || {};
+
 		var options = {};
 		//上报类型 1 手机端 2网站
 		options.stype = 1;
 		//用户ID,
-		options.uid = "132";
+		options.uid = user.uid || "";
 		//组ID
-		options.gid = 7;
+		options.gid = user.gid || "";
 		//比赛id,现在只有一个比赛 值=1
 		//options.mid = 1;
 		//客户端唯一标识
-		options["X-PID"] = "tre211";
+		options["X-PID"] = device.deviceid || "";
 		//第几页
 		options.cpage = 1;
 		//每页多少条
@@ -267,6 +261,43 @@ PageManager.prototype = {
 
 			$("#memberList").append(ul.join(''));
 			this.initiScroll();
+		}
+	},
+
+	/*
+	 * 根据比赛状态显示页面
+	*/
+	initLoadHtml:function(){
+		var status = Base.offlineStore.get("playstatus",true) - 0;
+		switch(status){
+			case 1:
+				//组队阶段
+				$("#wrapper").css("bottom","123px");
+				$("#isbatonStatus").hide();
+				$("#groupStatus").show();
+
+				//修改密码
+				$("#updatePwdBtn").rebind("touchstart",this.btnDown,this);
+				$("#updatePwdBtn").rebind("touchend",this.updatePwdBtnUp,this);
+				
+				//从队中移除跑友/选择第一棒
+				$("#memberSetupBtn > li").rebind("touchstart",this.btnDown,this);
+				$("#memberSetupBtn > li").rebind("touchend",this.memberSetupBtnUp,this);
+
+				//解散跑队
+				$("#disbandBtn").rebind("touchstart",this.btnDown,this);
+				$("#disbandBtn").rebind("touchend",this.disbandBtnUp,this);
+			break;
+			case 2:
+				//设置第一棒阶段
+				$("#wrapper").css("bottom","40px");
+				$("#groupStatus").hide();
+				$("#isbatonStatus").show();
+
+				//选择第一棒事件
+				$("#selectFirstBtn").rebind("touchstart",this.btnDown,this);
+				$("#selectFirstBtn").rebind("touchend",this.memberSetupBtnUp,this);
+			break;
 		}
 	},
 

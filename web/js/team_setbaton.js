@@ -10,10 +10,6 @@
 */
 
 var PageManager = function (obj){
-	//继承父类 公用事件
-	//TirosBase.apply(this,arguments);
-	//继承父类 公用函数
-	//TirosTools.apply(this,arguments);
 	this.init.apply(this,arguments);
 };
 
@@ -26,6 +22,8 @@ PageManager.prototype = {
 	bodyWidth:0,
 	//队员数据
 	memberData:null,
+	//用户数据
+	localUserInfo:{},
 	init: function(){
 		$(window).onbind("load",this.pageLoad,this);
 		$(window).onbind("touchmove",this.pageMove,this);
@@ -47,6 +45,8 @@ PageManager.prototype = {
 		//this.ratio = window.devicePixelRatio || 1;
 		this.bodyWidth = w;
 
+		//获取本地用户数据
+		this.localUserInfo = Base.getLocalDataInfo();
 		//获取跑友数据
 		this.getTeamMemberList();
 	},
@@ -138,17 +138,21 @@ PageManager.prototype = {
 	 * 请求跑队队员列表
 	*/
 	getTeamMemberList:function(){
+		var local = this.localUserInfo;
+		var user = local.userinfo || {};
+		var device = local.deviceinfo || {};
+
 		var options = {};
 		//上报类型 1 手机端 2网站
 		options.stype = 1;
 		//用户ID,
-		options.uid = "132";
+		options.uid = user.uid || "";
 		//组ID
-		options.gid = 7;
+		options.gid = user.gid || "";
 		//比赛id,现在只有一个比赛 值=1
 		//options.mid = 1;
 		//客户端唯一标识
-		options["X-PID"] = "tre211";
+		options["X-PID"] = device.deviceid || "";
 		//第几页
 		options.cpage = 1;
 		//每页多少条
@@ -180,19 +184,24 @@ PageManager.prototype = {
 	 * 设置第一棒
 	*/
 	setupBatonTeamMember:function(uid){
+		var local = this.localUserInfo;
+		var user = local.userinfo || {};
+		var play = local.playinfo || {};
+		var device = local.deviceinfo || {};
+
 		var options = {};
 		//上报类型 1 手机端 2网站
 		options.stype = 1;
 		//用户ID,未注册用户无此属性，如果有此属性后台服务会执行用户与设备匹配验证
-		options.uid = "132";
+		options.uid = user.uid || "";
 		//组ID
-		options.gid = 7;
+		options.gid = user.gid || "";
 		//比赛id,现在只有一个比赛 值=1
-		options.mid = 1;
+		options.mid = play.mid || 1;
 		//设置第一棒人员uid
 		options.batid = uid;
 		//客户端唯一标识
-		options["X-PID"] = "tre211";
+		options["X-PID"] = device.deviceid || "";
 		var reqUrl = this.bulidSendUrl("/match/setbaton.htm",options);
 		console.log(reqUrl);
 		
