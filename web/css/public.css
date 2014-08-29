@@ -1,6 +1,8 @@
 ﻿body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, p, blockquote, th, td, img { margin: 0; padding: 0; border: 0; outline: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); -webkit-user-select: none; }
 input, button, textarea { margin: 0; padding: 0; border: 0; outline: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
-input::-webkit-input-placeholder {color:#afafaf;}
+input::-webkit-input-placeholder {
+color:#afafaf;
+}
 body { font-size: 15px; line-height: 160%; font-family: Arial, sans-serif, Helvetica, "Microsoft YaHei", "SimHei"; background: #ffffff; }
 input { -webkit-appearance: none; -webkit-border-radius: 0; }
 ul, ol, li { list-style: none; }
@@ -18,7 +20,8 @@ a:active { color: #6d7579; }
 .tbtn-l.curr, .tbtn-r.curr { background-position: 14px -26px }
 /*-------------a.html style---------------*/
 .teamlist li { height:60px; border-bottom:1px solid #eeeeee; position:relative; padding-left:10px; }
-.teamlist li p { line-height:60px; color:#595959; font-size:16px }
+.teamlist li p { /*line-height:60px; */ color:#595959; font-size:16px }
+.teamlist li p { line-height: 120%; box-sizing: border-box; height:60px; display: table-cell; /*width: 1%;  padding-bottom:2px */ vertical-align: middle; }
 .head-img { float:left; width:36px; height:36px; margin-top:12px; margin-right:10px }
 .head-img img { width:36px; height:36px; border-radius: 50%; }
 .leader, .baton { float:right; height:26px; width:26px; text-indent:-9999px; margin-top:17px; margin-right:10px; }
@@ -52,7 +55,8 @@ a:active { color: #6d7579; }
 .login-btn { height:50px; display: -webkit-box; margin-top:5px }
 .login-btn .head-img { margin-left:10px }
 .login-btn li { -webkit-box-flex: 1; width: 0; height: 50px; border-bottom: none; padding-left: 0; }
-.login-btn li p { line-height: 120%; box-sizing: border-box; height:50px; display: table-cell; /*width: 1%;*/ vertical-align: middle; font-size:14px; padding-bottom:2px }
+/*.login-btn li p { line-height: 120%; box-sizing: border-box; height:50px; display: table-cell;vertical-align: middle; font-size:14px; padding-bottom:2px }*/
+.login-btn li p { font-size:14px; height: 48px; }
 .login-btn li p span { display:block }
 .login-btn .head-img { margin-top: 8px; }
 .login-btn li:first-child { width: 57%; }
@@ -60,13 +64,13 @@ a:active { color: #6d7579; }
 .login-btn li:last-child.curr { background-color:#47476b; color:#a6a6a6; }
 .removem li.curr_d { background:url(../images/dpi1/dui.png) no-repeat right center }
 .removem li.curr { background:#eee url(../images/dpi1/dui.png) no-repeat right center }
-.prompt { width:90%; margin:0 10px 10px 40px; line-height:160%; color: #595959; font-size: 14px; }
+.prompt { margin:0 10px 10px 40px; line-height:160%; color: #595959; font-size: 14px; }
 .inputDiv { margin-bottom:10px; padding-left:40px; background:url(../images/dpi1/pw.png) no-repeat 10px center; }
 .inputDiv.c_team { background: url(../images/dpi1/text.png) no-repeat 10px center; }
 .inputDiv input { width:100%; height:30px; color:#000; font-size: 14px; }
-.p_prompt { border:1px solid #ea700d; background:#fdebdd; line-height:20px; text-align:center; padding:10px; }
-.teamlist li p { line-height: 120%; box-sizing: border-box; height: 50px; display: table-cell;/* width: 1%; */ vertical-align: middle; font-size: 14px; padding-top: 9px; }
-.teamlist li p span { display:block; }
+.p_prompt { border-top:1px solid #ea700d; border-bottom:1px solid #ea700d; background:#fdebdd; line-height:20px; text-align:center; padding:10px; }
+/*.teamlist li p { line-height: 120%; box-sizing: border-box; height: 50px; display: table-cell;vertical-align: middle; font-size: 14px; padding-top: 9px; }*/
+.teamlist li p span { display:block; font-size:14px }
 .Information li input { float:right; text-align:right; height:30px; line-height:30px; color:#a5a5a5; width:150px; border:none; }
 .Information li select { -webkit-appearance: none; float:right; text-align:right; height:30px; line-height:30px; color:#a5a5a5; border:none; padding-left:100px; }
 .Information li { height:30px; line-height:30px; border-bottom:1px solid #eee; padding:10px }
@@ -87,35 +91,13 @@ a:active { color: #6d7579; }
 .p_km span { font-size:20px; }
 .p_distance { font-size:20px; color:#000; text-align:center; }
 .d-time p { font-size:20px; }
-.inputDiv input, .prompt, .c_teamlist, .searchmy input, .p_distance, .p_prompt, .login-btn li p span, .login-btn li:last-child, .d-time s, .d-time, .header_text, .teamlist li p, .h-btn li { font-family:"Microsoft YaHei"; }
-
-
-
-
-.rp_tishi span {
-	font-family:"Microsoft YaHei"
-}
-
-.rp_tishi {
-	position:absolute;
-	bottom:70px;
-	text-align:center;
-	z-index:99;width:100%;
-}
-.rp_tishi span {
-	display:inline-block;
-	margin:0 20px;
-	background-color:rgba(0, 0, 0, 0.8);
-	border:1px solid rgba(0, 0, 0, 0.6);
-	color:#FFF;
-	padding:8px 10px;
-	-webkit-border-radius:3px;
-	-moz-border-radius:3px;
-	border-radius:3px;
-	-webkit-box-shadow:0px 0px 8px rgba(0, 0, 0, .9);
-	box-shadow:0 0 8px rgba(0, 0, 0, .9);
-	line-height:120%;
-	white-space:pre-wrap;
-	word-wrap:break-word;
-	word-break:break-all;
-}
+/*----------xtxx-----------*/
+.xtlist li { position:relative; color: #595959; border-bottom: 1px solid #eee; padding:10px 30px 12px 56px; background:url(../images/dpi1/xx.png) no-repeat 10px center; }
+.xtlist li h3 { font-weight:normal; font-size:16px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height:140% }
+.xtlist li p { font-size:14px; color:#999999; line-height:100% }
+.xtlist li.curr { background-color:#eee; }
+.xtlist li.w { background-color:#ffffe5 }
+.xtlist-xx { color: #595959; padding:10px 10px 12px 56px; background:url(../images/dpi1/xx.png) no-repeat 10px 10px; }
+.xtlist-xx h3{font-size:16px;line-height:140%;font-weight:normal;}
+.xtlist-xx p{padding-top:4px;font-size:14px; color:#999999; line-height:160%}
+.xtlist-xx h3,.xtlist li h3, .xtlist li p, .inputDiv input, .prompt, .c_teamlist, .searchmy input, .p_distance, .p_prompt, .login-btn li p span, .login-btn li:last-child, .d-time s, .d-time, .header_text, .teamlist li p, .h-btn li { font-family:"Microsoft YaHei"; }
