@@ -54,7 +54,15 @@ PageManager.prototype = {
 		//this.getMessageList();
 	},
 	pageBack:function(evt){
-		Base.pageBack(-1);
+		//Base.pageBack(-1);
+		//首次启动页面,返回本地前一页
+		if (Base.isMobilePlatform.android) {
+			window.JSAndroidBridge.gotoPrePage();
+		} else if (Base.isMobilePlatform.iphone || Base.isMobilePlatform.ipad) {
+			window.location.href=("objc:??gotoPrePage");
+		} else {
+			alert("调用本地goPersonal方法,PC不支持.");
+		}
 	},
 	pageMove:function(evt){
 		evt.preventDefault();
