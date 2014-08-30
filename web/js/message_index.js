@@ -56,9 +56,9 @@ PageManager.prototype = {
 	pageBack:function(evt){
 		//Base.pageBack(-1);
 		//首次启动页面,返回本地前一页
-		if (Base.isMobilePlatform.android) {
+		if (Base.mobilePlatform.android) {
 			window.JSAndroidBridge.gotoPrePage();
-		} else if (Base.isMobilePlatform.iphone || Base.isMobilePlatform.ipad) {
+		} else if (Base.mobilePlatform.iphone || Base.mobilePlatform.ipad) {
 			window.location.href=("objc:??gotoPrePage");
 		} else {
 			alert("调用本地goPersonal方法,PC不支持.");
