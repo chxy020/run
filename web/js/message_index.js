@@ -22,7 +22,9 @@ PageManager.prototype = {
 	bodyWidth:0,
 	//消息数据
 	messageData:null,
-	init: function(){
+	//页码
+	page:1,
+	init:function(){
 		$(window).onbind("load",this.pageLoad,this);
 		$(window).onbind("touchmove",this.pageMove,this);
 		this.bindEvent();
@@ -44,12 +46,12 @@ PageManager.prototype = {
 		//this.bodyHeight = h;
 
 		//获取本地用户数据
-		this.localUserInfo = Base.getLocalDataInfo();
+		//this.localUserInfo = Base.getLocalDataInfo();
 		//根据状态初始化页面
 		//this.initLoadHtml();
 
 		//请求历史消息记录
-		this.getMessageList();
+		//this.getMessageList();
 	},
 	pageBack:function(evt){
 		Base.pageBack(-1);
@@ -64,7 +66,20 @@ PageManager.prototype = {
 	*/
 	pageHide:function(){
 	},
-	
+	/*
+	 * 平台启动页面初始化参数
+	*/
+	initPageManager:function(){
+		this.localUserInfo = Base.getLocalDataInfo();
+
+		//更新比赛状态/用户状态初始化页面
+		//this.userStatus = this.countUserStatus();
+		//this.playStatus = this.countPlayStatus();
+		//this.initLoadHtml();
+
+		//请求比赛状态
+		this.getMessageList();
+	},
 	btnDown:function(evt){
 		//按钮按下通用高亮效果
 		this.moved = false;
@@ -85,6 +100,21 @@ PageManager.prototype = {
 			//保存查看详情消息ID
 			Base.offlineStore.set("messagedetail_id",id,true);
 			Base.toPage("message_detail.html");
+		}
+		else{
+			$(ele).removeClass("curr");
+		}
+	},
+
+	/*
+	 * 点击请求下一页
+	*/
+	pageBtnUp:function(evt){
+		var ele = evt.currentTarget;
+		$(ele).removeClass("curr");
+		if(!this.moved){
+			this.page++;
+			this.getMessageList();
 		}
 		else{
 			$(ele).removeClass("curr");
@@ -136,7 +166,7 @@ PageManager.prototype = {
 		//客户端唯一标识
 		options["X-PID"] = device.deviceid || "";
 		//第几页
-		options.cpage = 1;
+		options.cpage = this.page;
 		//每页多少条
 		options.pagesize = 30;
 		
@@ -148,11 +178,16 @@ PageManager.prototype = {
 			context:this,
 			success:function(data){
 				console.log(data);
-				//var state = data.state.code - 0;
-				state = 0 ;
+				var state = data.state.code - 0;
 				if(state === 0){
-					this.messageData = data;
-					this.changeMessageListHtml(data);
+					var len = data.list.length;
+					if(len > 0){
+						this.messageData = data;
+						this.changeMessageListHtml(data);
+					}
+					else{
+						$("#pageBtn").hide();
+					}
 				}
 				else{
 					var msg = data.state.desc + "(" + state + ")";
@@ -160,7 +195,6 @@ PageManager.prototype = {
 				}
 			}
 		});
-		/**/
 	},
 
 	/**
@@ -202,6 +236,8 @@ PageManager.prototype = {
 			//注销消息事件
 			$("#messageList > li").rebind("touchstart",this.btnDown,this);
 			$("#messageList > li").rebind("touchend",this.messageItemUp,this);
+
+			$("#pageBtn").show();
 		}
 	},
 
