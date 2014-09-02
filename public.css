@@ -73,17 +73,7 @@ a:active { color: #6d7579; }
 .teamlist li p span { display:block; font-size:14px }
 .Information li input { float:right; text-align:right; height:30px; line-height:30px; color:#a5a5a5; width:150px; border:none; }
 .Information li select { -webkit-appearance: none; float:right; text-align:right; height:30px; line-height:30px; color:#a5a5a5; border:none; padding-left:100px; }
-.Information li { height:30px; line-height:30px; border-bottom:1px solid #eee; padding:10px; position:relative }
-.Information li span.txx { float: right; font-size: 14px; color: #aeaeae; margin-right: 15px; line-height: 28px; }
-.nccc { margin: 20px 20px 15px; }
-.nccc li { font-size: 14px; color: #606366; border: 1px solid #c1c1c1; padding:4px 10px; margin-bottom: 10px; background-color: #FFF; }
-.nccc li h2 input { height: 30px; font-size: 16px; color: #606366; width: 100%; }
-.btnwrap { margin-top:30px; margin-left:10px; margin-right:10px; }
-.btnwrap li { -webkit-box-flex: 1; width: 0; text-align: center; color: #fff; font-size: 16px; background-color: #666699; line-height: 40px; margin:0 10px; }
-.btnwrap li:last-child { margin-left:none; }
-.selbox { margin: 20px; }
-.selbox li { margin-bottom: 10px; }
-select.set { -webkit-appearance: none; height: 40px; line-height: 40px; width: 100%; color: #606366; padding-left: 5px; border: 1px solid #c1c1c1; font-size: 16px; font-weight: normal; background: #ffffff url(../images/dpi1/sanjiao.png) no-repeat right center; }
+.Information li { height:30px; line-height:30px; border-bottom:1px solid #eee; padding:10px }
 .searchmy { margin:0; }
 .searchmy li:last-child { width: 25%; }
 .searchmy li:first-child { width: 75%; }
@@ -108,94 +98,36 @@ select.set { -webkit-appearance: none; height: 40px; line-height: 40px; width: 1
 .xtlist li.curr { background-color:#eee; }
 .xtlist li.w { background-color:#ffffe5 }
 .xtlist-xx { color: #595959; padding:10px 10px 12px 56px; background:url(../images/dpi1/xx.png) no-repeat 10px 10px; }
-.xtlist-xx h3 { font-size:16px; line-height:140%; font-weight:normal; }
-.xtlist-xx p { padding-top:4px; font-size:14px; color:#999999; line-height:160% }
-/*----------8.30-----------*/
-.poptext { text-align:center; font-size:14px; color:#c1c1c1; margin-top:10px; margin-bottom:18px }
-.guidelist { width:242px; margin:0 auto }
-.guidelist li { margin-bottom:10px }
-.guidelist li img { display:block }
-.guidelist li h3 { height:30px; line-height:30px; font-size:14px; color:#000; padding-left:44px; font-weight:normal; position:relative; margin-bottom:10px }
-.guidelist li h3 span { position:absolute; left:0; top:0; height:30px; width:30px; line-height:30px; color:#fff; font-size:14px; text-align:center; background:url(../images/dpi1/ybg.png) no-repeat center; }
-/*----------9.1-----------*/
-.uslogo {background:url(../images/dpi1/about-us.png) no-repeat center; height:157px; margin-top:30px;}
-.ustext{color:#666;font-size:14px;width:230px;margin: 10px auto;}
-.ustext h4{font-size:16px;margin-bottom:20px;text-align:center;font-weight:normal}
-.ustext p{text-align:left;margin-bottom:16px;}
-.ustext a{color:#ff3400}
-/*-------------loading Cancel btn start-------------*/
-.prompt_mask { background-color:rgba(0, 0, 0, .5); position:absolute; top:0; left:0; right:0; bottom:0; height:100%; z-index:120; }
-.p_load { height:50px; width:200px; background:rgba(0, 0, 0, 0.75); position:absolute; left:50%; top:50%; margin-left:-100px; margin-top:-25px; }
-.loadimg { width:50px; height:50px; float:left; }
-.loadimg span { display:block; width:20px; height:20px; margin:15px 0 0 15px; background:url(../images/dpi1/ld.png) no-repeat center top; -webkit-transform: rotate(0deg) translateZ(0); -webkit-transition-duration: 0ms; -webkit-animation-name: inpload; -webkit-animation-duration: 2.4s; -webkit-animation-iteration-count: infinite; -webkit-animation-timing-function: linear; }
-.loadtext { width:99px; height:50px; line-height:50px; float:left; color:#fff; font-size:15px; }
-.loadqx { float:left; width:50px; height:50px; background-color:#ff5500; border-left:1px solid #999; background:url(../images/dpi1/ld.png) no-repeat 20px -30px; }
-@-webkit-keyframes inpload { 0% {
--webkit-transform:rotate(0deg);
+.xtlist-xx h3{font-size:16px;line-height:140%;font-weight:normal;}
+.xtlist-xx p{padding-top:4px;font-size:14px; color:#999999; line-height:160%}
+.xtlist-xx h3,.xtlist li h3, .xtlist li p, .inputDiv input, .prompt, .c_teamlist, .searchmy input, .p_distance, .p_prompt, .login-btn li p span, .login-btn li:last-child, .d-time s, .d-time, .header_text, .teamlist li p, .h-btn li { font-family:"Microsoft YaHei"; }
+
+
+
+.rp_tishi span {
+	font-family:"Microsoft YaHei"
 }
-5% {
--webkit-transform:rotate(18deg);
+
+.rp_tishi {
+	position:absolute;
+	bottom:70px;
+	text-align:center;
+	z-index:99;width:100%;
 }
-10% {
--webkit-transform:rotate(36deg);
+.rp_tishi span {
+	display:inline-block;
+	margin:0 20px;
+	background-color:rgba(0, 0, 0, 0.8);
+	border:1px solid rgba(0, 0, 0, 0.6);
+	color:#FFF;
+	padding:8px 10px;
+	-webkit-border-radius:3px;
+	-moz-border-radius:3px;
+	border-radius:3px;
+	-webkit-box-shadow:0px 0px 8px rgba(0, 0, 0, .9);
+	box-shadow:0 0 8px rgba(0, 0, 0, .9);
+	line-height:120%;
+	white-space:pre-wrap;
+	word-wrap:break-word;
+	word-break:break-all;
 }
-15% {
--webkit-transform:rotate(54deg);
-}
-20% {
--webkit-transform:rotate(72deg);
-}
-25% {
--webkit-transform:rotate(90deg);
-}
-30% {
--webkit-transform:rotate(108deg);
-}
-35% {
--webkit-transform:rotate(126deg);
-}
-40% {
--webkit-transform:rotate(144deg);
-}
-45% {
--webkit-transform:rotate(162deg);
-}
-50% {
--webkit-transform:rotate(180deg);
-}
-55% {
--webkit-transform:rotate(198deg);
-}
-60% {
--webkit-transform:rotate(216deg);
-}
-65% {
--webkit-transform:rotate(234deg);
-}
-70% {
--webkit-transform:rotate(252deg);
-}
-75% {
--webkit-transform:rotate(270deg);
-}
-80% {
--webkit-transform:rotate(288deg);
-}
-85% {
--webkit-transform:rotate(306deg);
-}
-90% {
--webkit-transform:rotate(324deg);
-}
-95% {
--webkit-transform:rotate(342deg);
-}
-100% {
--webkit-transform:rotate(360deg);
-}
-/*from{-webkit-transform:rotate(0deg) translateZ(0);}
-to{-webkit-transform:rotate(360deg) translateZ(0);}*/
-}
-.rp_tishi { position: absolute; bottom: 70px; text-align: center; z-index: 99; width: 100%; }
-.rp_tishi span { display: inline-block; margin: 0 20px; background-color: rgba(0, 0, 0, 0.8); color: #FFF; padding: 6px 20px; line-height: 30px; white-space: pre-wrap; word-wrap: break-word; word-break: break-all; font-size: 15px; }
-.ustext,.guidelist li h3, .poptext, .rp_tishi span, .loadtext, select.set, .nccc li h2 input, .Information li, .xtlist-xx h3, .xtlist li h3, .xtlist li p, .inputDiv input, .prompt, .c_teamlist, .searchmy input, .p_distance, .p_prompt, .login-btn li p span, .login-btn li:last-child, .d-time s, .d-time, .header_text, .teamlist li p, .h-btn li { font-family:"Microsoft YaHei"; }
