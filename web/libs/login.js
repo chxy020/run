@@ -9,7 +9,7 @@
 
 (function(window){
 	//初始化页面函数
-	window.callbackInit = function(userinfo,playinfo,deviceinfo){
+	window.callbackInit = function(userinfo,playinfo,deviceinfo,serverurl){
 		var obj = {};
 		if(userinfo != ""){
 			userinfo = Base.str2Json(userinfo);
@@ -26,7 +26,8 @@
 		var dataStr = Base.json2Str(obj);
 		//保存数据到本地
 		Base.offlineStore.set("_localuserinfo",dataStr);
-		
+		//保存请求地址到本地
+		Base.offlineStore.set("local_server_url",serverurl,true);
 		//调用页面初始化方法
 		initPage();
 	};
@@ -72,6 +73,6 @@ $(function(){
 	var deviceinfo = {};
 	deviceinfo.deviceid = "tre211";
 	deviceinfo.platform = "android";
-	window.callbackInit(Base.json2Str(userinfo),Base.json2Str(playinfo),Base.json2Str(deviceinfo));
+	window.callbackInit(Base.json2Str(userinfo),Base.json2Str(playinfo),Base.json2Str(deviceinfo),"http://182.92.97.144:8080/");
 });
 */

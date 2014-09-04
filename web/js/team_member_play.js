@@ -228,7 +228,8 @@ PageManager.prototype = {
 	 * options请求参数
 	*/
 	bulidSendUrl:function(server,options){
-		var url = Base.ServerUrl + server;
+		var serverUrl = Base.offlineStore.get("local_server_url",true) + "chSports";
+		var url = serverUrl + server;
 
 		var data = {};
 		/*
