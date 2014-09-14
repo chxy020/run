@@ -25,6 +25,7 @@ PageManager.prototype = {
 	//用户数据
 	localUserInfo:{},
 	init: function(){
+		this.httpTip = new HttpTip({scope:this});
 		$(window).onbind("load",this.pageLoad,this);
 		$(window).onbind("touchmove",this.pageMove,this);
 		this.bindEvent();
@@ -159,13 +160,13 @@ PageManager.prototype = {
 		options.pagesize = 30;
 
 		var reqUrl = this.bulidSendUrl("/match/querygroupry.htm",options);
-		console.log(reqUrl);
-		
+		//console.log(reqUrl);
+		this.httpTip.show();
 		$.ajaxJSONP({
 			url:reqUrl,
 			context:this,
 			success:function(data){
-				console.log(data);
+				//console.log(data);
 				var state = data.state.code - 0;
 				if(state === 0){
 					this.memberData = data;
@@ -175,6 +176,7 @@ PageManager.prototype = {
 					var msg = data.state.desc + "(" + state + ")";
 					Base.alert(msg);
 				}
+				this.httpTip.hide();
 			}
 		});
 		/**/
@@ -203,13 +205,13 @@ PageManager.prototype = {
 		//客户端唯一标识
 		options["X-PID"] = device.deviceid || "";
 		var reqUrl = this.bulidSendUrl("/match/setbaton.htm",options);
-		console.log(reqUrl);
-		
+		//console.log(reqUrl);
+		this.httpTip.show();
 		$.ajaxJSONP({
 			url:reqUrl,
 			context:this,
 			success:function(data){
-				console.log(data);
+				//console.log(data);
 				var state = data.state.code - 0;
 				if(state === 0){
 					Base.alert("第一棒设置成功");
@@ -218,6 +220,7 @@ PageManager.prototype = {
 					var msg = data.state.desc + "(" + state + ")";
 					Base.alert(msg);
 				}
+				this.httpTip.hide();
 			}
 		});
 		/**/
@@ -300,17 +303,12 @@ PageManager.prototype = {
 	*/
 	closeTipBtnUp:function(evt){
 		if(evt != null){
-			evt.preventDefault();
 			var ele = evt.currentTarget;
 			$(ele).removeClass("curr");
 			if(!this.moved){
-				$("#servertip").hide();
-				this.isTipShow = false;
 			}
 		}
 		else{
-			$("#servertip").hide();
-			this.isTipShow = false;
 		}
 	},
 	
@@ -318,22 +316,9 @@ PageManager.prototype = {
 	 * 重试
 	*/
 	retryBtnUp:function(evt){
-		evt.preventDefault();
 		var ele = evt.currentTarget;
 		$(ele).removeClass("curr");
 		if(!this.moved){
-			$("#servertip").hide();
-			this.isTipShow = false;
-			this.getPoiDetail();
-			/*
-			if(this.retrytype == "getPoiDetail"){
-				this.getPoiDetail();
-				this.$shareBox.hide();
-				$(this.meetBtn).hide();
-			}else if(this.retrytype == "getAibangServerData"){
-				this.getAibangServerData();
-			}
-			*/
 		}
 	},
 	
@@ -343,10 +328,6 @@ PageManager.prototype = {
 	closeHttpTip:function(){
 		this.httpTip.hide();
 		this.pageHide();
-		//如果是没有POI基础数据弹出的loading,返回到前一页
-		if(this.isBack){
-			frame.pageBack();
-		}
 	}
 };
 

@@ -74,6 +74,81 @@
 })(Zepto);
 
 
+//小联网load提示
+function HttpTip(obj){
+	this.scope = obj.scope || this;
+	this.bg = obj.bg || false;
+	this.hasClose = obj.hasClose === false ? false : true;
+	this.text = obj.text || "正在加载...";
+	this.init.apply(this,arguments);
+};
+HttpTip.prototype = {
+	constructor:HttpTip,
+	id:"_httptip",
+	closeid:"_closehttptip",
+	moved:false,
+	init:function(obj){
+		var html = [];
+		var bgcss = this.bg == true ? "" : "transparentbg";
+		html.push('<div id="_httptip" class="prompt_mask ' + bgcss + '" style="display:none;">');
+		html.push('<div class="p_load" >');
+		html.push('<div class="loadimg"><span></span></div>');
+		html.push('<div id="_httptext" class="loadtext">' + this.text + '</div>');
+		if(this.hasClose){
+			html.push('<div id="_closehttptip" class="loadqx"></div>');
+		}
+		html.push('</div></div>');
+		var $tip = $("#" + this.id);
+		if($tip.length == 1){
+			$tip.html(html.join(''));
+		}
+		else{
+			$(document.body).append(html.join(''));
+		}
+		this.bindEvent();
+	},
+	bindEvent:function(){
+		$("#" + this.id).onbind("touchmove",this.tipMove,this);
+		$("#" + this.closeid).onbind("touchstart",this.btnDown,this);
+		$("#" + this.closeid).onbind("touchend",this.closeBtnUp,this);
+	},
+	tipMove:function(evt){
+		//evt.preventDefault();
+		this.moved = true;
+	},
+	btnDown:function(evt){
+		//evt.preventDefault();
+		this.moved = false;
+	},
+	closeBtnUp:function(evt){
+		if(!this.moved){
+			if(this.scope != null && this.scope != undefined){
+				if(typeof this.scope.closeHttpTip == "function"){
+					this.scope.closeHttpTip(evt);
+				}
+			}
+		}
+	},
+	show:function(txt){
+		if(txt != "" && txt != null && typeof(txt) != "undefined"){
+			$("#_httptext").text(txt);
+		}
+		$("#_httptip").show();
+	},
+	hide:function(){
+		$("#_httptip").hide();
+	},
+	isHide:function(){
+		var b = true;
+		var dp = $("#_httptip").css("display");
+		if(dp == "block"){
+			b = false;
+		}
+		return b;
+	}
+};
+
+
 (function(window) {
 	var global = this;
 	if (typeof Base === "undefined") {
@@ -294,7 +369,6 @@
 	});
 	*/
 
-
 	var localStore = window.localStorage;
 	var undefinedType = void 0;
 	var isEnableStore = "localStorage" in window && localStore !== null && localStore !== undefinedType;
@@ -473,6 +547,7 @@
 	Base.pageBack = pageBack;
 	
 }(window));
+
 
 
 

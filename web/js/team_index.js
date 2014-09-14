@@ -33,6 +33,7 @@ PageManager.prototype = {
 	//用户数据
 	localUserInfo:{},
 	init: function(){
+		this.httpTip = new HttpTip({scope:this});
 		$(window).onbind("load",this.pageLoad,this);
 		$(window).onbind("touchmove",this.pageMove,this);
 		this.bindEvent();
@@ -78,12 +79,7 @@ PageManager.prototype = {
 	*/
 	initPageManager:function(){
 		this.localUserInfo = Base.getLocalDataInfo();
-
-		//更新比赛状态/用户状态初始化页面
-		this.userStatus = this.countUserStatus();
-		this.playStatus = this.countPlayStatus();
-		this.initLoadHtml();
-
+		
 		//请求比赛状态
 		this.getCompetitionStatus();
 	},
@@ -200,21 +196,27 @@ PageManager.prototype = {
 		//客户端唯一标识
 		options["X-PID"] = "tre211";
 		var reqUrl = this.bulidSendUrl("/match/querymatchinfo.htm",options);
-		console.log(reqUrl);
-		
+		//console.log(reqUrl);
+		this.httpTip.show();
 		$.ajaxJSONP({
 			url:reqUrl,
 			context:this,
 			success:function(data){
-				console.log(data);
+				//console.log(data);
 				var state = data.state.code - 0;
 				if(state === 0){
 					this.changeSlideImage(data);
+
+					//更新比赛状态/用户状态初始化页面
+					this.userStatus = this.countUserStatus();
+					this.playStatus = this.countPlayStatus(data);
+					this.initLoadHtml();
 				}
 				else{
 					var msg = data.state.desc + "(" + state + ")";
 					Base.alert(msg);
 				}
+				this.httpTip.hide();
 			}
 		});
 		/**/
@@ -235,6 +237,7 @@ PageManager.prototype = {
 		var us = this.userStatus;
 		//比赛状态
 		var ps = this.playStatus;
+		//console.log(us,ps);
 
 		var local = this.localUserInfo;
 		var user = local.userinfo || {};
@@ -256,7 +259,7 @@ PageManager.prototype = {
 		}
 		
 		//隐藏文字提示
-		if((us == 2 || us == 3) && ps == 3){
+		if((us == 2 || us == 3) && (ps == 3 || ps == 0)){
 			//未组队或者已组队,并且比赛状态再比赛前1小时
 			//这时候需要隐藏文字提示
 			playStatus.hide();
@@ -332,6 +335,30 @@ PageManager.prototype = {
 			html.push('</li>');
 			teamList.removeClass("login-btn");
 		}
+		else if((us == 1) && ps == 0){
+			//显示我要报名
+			html.push('<li>');
+			html.push('<div class="head-img"><img src="images/default-head-img.jpg" alt="" width="36" height="36"></div>');
+			html.push('<p>');
+			html.push('<span>' + nikeName + '</span>');
+			//html.push('<span>' + groupName + '</span>');
+			html.push('</p>');
+			html.push('</li>');
+			html.push('<li id="_signBtn" data="setup">我要报名</li>');
+			teamList.addClass("login-btn");
+		}
+		else if(us == 0 && ps == 0){
+			//显示我要注册/登录
+			html.push('<li>');
+			html.push('<div class="head-img"><img src="images/default-head-img.jpg" alt="" width="36" height="36"></div>');
+			html.push('<p>');
+			html.push('<span>未登录</span>');
+			//html.push('<span>' + groupName + '</span>');
+			html.push('</p>');
+			html.push('</li>');
+			html.push('<li id="_loginBtn" data="setup">注册/登录</li>');
+			teamList.addClass("login-btn");
+		}
 
 		if(html.length > 0){
 			teamList.html(html.join(''));
@@ -368,18 +395,26 @@ PageManager.prototype = {
 			html.push('</div>');
 			return html.join('');
 		}
-
-		$("#scroller").html(html.join(''));
-		this.initiScroll();
-		//保存url
-		// this.mapOldUrl["cityMap" + code] = imgUrl;
-		//获取图片dom
-		var img = $("#scroller > div > img");
-		var imgUrl = [img1,img2,img3];
-		for(var i = 0,len = img.length; i < len; i++){
-			//加载图片
-			Base.imageLoaded($(img[i]),imgUrl[i]);
+		
+		if(html.length > 0){
+			$("#viewport").show();
+			$("#scroller").html(html.join(''));
+			this.initiScroll();
+			//保存url
+			// this.mapOldUrl["cityMap" + code] = imgUrl;
+			//获取图片dom
+			var img = $("#scroller > div > img");
+			var imgUrl = [img1,img2,img3];
+			for(var i = 0,len = img.length; i < len; i++){
+				//加载图片
+				Base.imageLoaded($(img[i]),imgUrl[i]);
+			}
 		}
+		else{
+			//隐藏广告图片
+			$("#viewport").hide();
+		}
+		
 	},
 
 	/*
@@ -405,15 +440,73 @@ PageManager.prototype = {
 	 * 计算用户当前状态
 	*/
 	countUserStatus:function(){
-
-		return 3;
+		var status;
+		var local = this.localUserInfo;
+		var user = local.userinfo || {};
+		var uid = user.uid || "0";
+		//报名ID
+		var bid = user.bid || "0";
+		//组ID
+		var gid = user.gid || "0";
+		if(uid == "0"){
+			//如果uid等于"0",就标识未注册状态
+			status = 0;
+		}
+		else if(bid == "0"){
+			//如果bid=="0",就标识未报名
+			status = 1;
+		}
+		else if(gid == "0"){
+			//如果gid=="0",就标识未组队
+			status = 2;
+		}
+		else{
+			status = 3;
+		}
+		return status;
 	},
 
 	/*
 	 * 计算比赛当前状态
 	*/
-	countPlayStatus:function(){
-		return 2;
+	countPlayStatus:function(obj){
+		//console.log(obj);
+		var status;
+
+		var local = this.localUserInfo;
+		var user = local.userinfo || {};
+		//组ID
+		var gid = user.gid || "0";
+
+		//报名状态1可以报名 2报名未开始  3 报名过期
+		var signstate = obj.signstate - 0 || 1;
+		//组队状态1 允许组队 0不允许
+		var groupstate = obj.groupstate - 0 || 0;
+		if(signstate == 2){
+			//报名未开始,页面不显示操作按钮
+			status = -1;
+		}
+		else if(signstate == 1){
+			//报名阶段
+			status = 0;
+		}
+
+		if(groupstate == 1){
+			if(gid == "0"){
+				//如果没有组ID,那么应该就是组队阶段
+				//组队阶段
+				status = 1;
+			}
+			else{
+				//可以组队,又有组ID了,应该就是设置第一棒的状态
+				status = 2;
+			}
+		}
+		else{
+			//不允许组队,应该就进入赛前1小时阶段了
+			status = 3;
+		}
+		return status;
 	},
 
 	/**
@@ -447,27 +540,17 @@ PageManager.prototype = {
 		return reqUrl;
 	},
 
-
-
-
-
-
 	/**
 	 * 关闭提示框
 	*/
 	closeTipBtnUp:function(evt){
 		if(evt != null){
-			evt.preventDefault();
 			var ele = evt.currentTarget;
 			$(ele).removeClass("curr");
 			if(!this.moved){
-				$("#servertip").hide();
-				this.isTipShow = false;
 			}
 		}
 		else{
-			$("#servertip").hide();
-			this.isTipShow = false;
 		}
 	},
 	
@@ -475,13 +558,9 @@ PageManager.prototype = {
 	 * 重试
 	*/
 	retryBtnUp:function(evt){
-		evt.preventDefault();
 		var ele = evt.currentTarget;
 		$(ele).removeClass("curr");
 		if(!this.moved){
-			$("#servertip").hide();
-			this.isTipShow = false;
-			this.getPoiDetail();
 		}
 	},
 	
@@ -491,10 +570,6 @@ PageManager.prototype = {
 	closeHttpTip:function(){
 		this.httpTip.hide();
 		this.pageHide();
-		//如果是没有POI基础数据弹出的loading,返回到前一页
-		if(this.isBack){
-			frame.pageBack();
-		}
 	}
 };
 

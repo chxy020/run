@@ -61,7 +61,7 @@ $(function(){
 	//测试数据
 	var userinfo = {};
 	userinfo.uid = "132";
-	userinfo.bid = "";
+	userinfo.bid = "11";
 	userinfo.gid = "8";
 	userinfo.username = "";
 	userinfo.nikename = "没啥意思a";
