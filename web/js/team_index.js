@@ -32,6 +32,8 @@ PageManager.prototype = {
 	playStatus:0,
 	//用户数据
 	localUserInfo:{},
+	//比赛明细数据
+	playData:{},
 	init: function(){
 		this.httpTip = new HttpTip({scope:this});
 		$(window).onbind("load",this.pageLoad,this);
@@ -206,7 +208,9 @@ PageManager.prototype = {
 				var state = data.state.code - 0;
 				if(state === 0){
 					this.changeSlideImage(data);
-
+					//保存数据
+					this.playData = data;
+					
 					//更新比赛状态/用户状态初始化页面
 					this.userStatus = this.countUserStatus();
 					this.playStatus = this.countPlayStatus(data);
@@ -421,8 +425,80 @@ PageManager.prototype = {
 	 * 计算比较倒计时和进行时
 	*/
 	countPlayTime:function(){
-		var time = "距比赛还有：<span>18</span><s>天</s><span>52</span><s>时</s><span>25</span><s>分</s><span>42</span><s>秒</s>";
+		//var time = "距比赛还有：<span>18</span><s>天</s><span>52</span><s>时</s><span>25</span><s>分</s><span>42</span><s>秒</s>";
+		var time = "";
+		var obj = this.playData;
+		var now = new Date();
+		var startTime = obj.starttime;
+		//startTime = "2014-09-30 8:0:0";
+		var sDate = this.formatDate(startTime);
+		//判断是倒计时 还是 正计时
+		//1比赛开始 2未开始3 比赛结束
+		var matchstate = obj.matchstate - 0;
+		//matchstate = 2;
+
+		if(matchstate == 1){
+			//正计时
+			if(sDate != null){
+				var ms = now - sDate;
+				time = this.formatMs(ms);
+				time = "比赛已经开始：" + time;
+			}
+		}
+		else if(matchstate == 2){
+			//倒计时
+			if(sDate != null){
+				var ms = sDate - now;
+				time = this.formatMs(ms);
+				time = "距比赛还有：" + time;
+			}
+		}
 		return time;
+	},
+
+	formatDate:function(str){
+		var date = null;
+		var s1 = str.split(" ");
+		if(s1.length == 2){
+			var arr1 = s1[0].split("-");
+			var arr2 = s1[1].split(":");
+
+			if(arr1.length == 3 && arr2.length == 3){
+				date = new Date(arr1[0],arr1[1] - 1,arr1[2],arr2[0],arr2[1],arr2[2]);
+				return date;
+			}
+		}
+		return date;
+	},
+
+	formatMs:function(ms){
+		//debugger
+		var time = ms / 1000;
+		if (time <= 60) {
+			return "<span>" + time + "</span><s>秒</s>";
+		} else if (time > 60 && time < 3600) {
+			//秒
+			var second = parseInt(time % 60);
+			//分钟
+			var minute = parseInt((ms % 3600) / 60);
+			return "<span>" + minute + "</span><s>分</s>" + "<span>" + second + "</span><s>秒</s>";
+		} else if (time >= 3600 && time < 86400) {
+			//秒
+			var second = parseInt(time % 60);
+			//分钟
+			var minute = parseInt((time % 3600) / 60);
+			var hour = parseInt(time / 3600);
+			return "<span>" + hour + "</span><s>时</s><span>" + minute + "</span><s>分</s>" + "<span>" + second + "</span><s>秒</s>";
+		} else {
+			//秒
+			var second = parseInt(time % 60);
+			//分钟
+			var minute = parseInt((ms % 3600) / 60);
+			//小时
+			var temp_hour = parseInt((time % 86400) / 3600);
+			var day = parseInt(time / 86400);
+			return "<span>" + day + "</span><s>天</s><span>" + temp_hour + "</span><s>时</s><span>" + minute + "</span><s>分</s><span>" + second + "</span><s>秒</s>";
+		}
 	},
 
 	/*
@@ -482,6 +558,8 @@ PageManager.prototype = {
 		var signstate = obj.signstate - 0 || 1;
 		//组队状态1 允许组队 0不允许
 		var groupstate = obj.groupstate - 0 || 0;
+		//比赛状态1比赛开始 2未开始3 比赛结束
+		var matchstate = obj.matchstate - 0 || 2;
 		if(signstate == 2){
 			//报名未开始,页面不显示操作按钮
 			status = -1;
@@ -505,6 +583,15 @@ PageManager.prototype = {
 		else{
 			//不允许组队,应该就进入赛前1小时阶段了
 			status = 3;
+		}
+
+		if(matchstate == 1){
+			//比赛开始
+			status = 4;
+		}
+		else if(matchstate == 3){
+			//比赛结束
+			status = 5;
 		}
 		return status;
 	},
