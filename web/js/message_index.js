@@ -78,7 +78,7 @@ PageManager.prototype = {
 	 * 平台启动页面初始化参数
 	*/
 	initPageManager:function(){
-		Base.alert("init",true);
+		//Base.alert("init",true);
 		this.localUserInfo = Base.getLocalDataInfo();
 
 		//更新比赛状态/用户状态初始化页面
@@ -178,7 +178,7 @@ PageManager.prototype = {
 		options.cpage = this.page;
 		//每页多少条
 		options.pagesize = 30;
-		Base.alert("开始请求:uid:" + user.uid,true);
+		//Base.alert("开始请求:uid:" + user.uid,true);
 		var reqUrl = this.bulidSendUrl("/match/announcementlist.htm",options);
 		//console.log(reqUrl);
 		this.httpTip.show();
@@ -188,10 +188,10 @@ PageManager.prototype = {
 			success:function(data){
 				//console.log(data);
 				var state = data.state.code - 0;
-				Base.alert("数据返回:state:" + state,true);
+				//Base.alert("数据返回:state:" + state,true);
 				if(state === 0){
 					var len = data.list.length;
-					Base.alert("数据返回:len:" + len,true);
+					//Base.alert("数据返回:len:" + len,true);
 					if(len > 0){
 						this.messageData = data;
 						this.changeMessageListHtml(data);
