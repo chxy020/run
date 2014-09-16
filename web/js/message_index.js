@@ -84,8 +84,8 @@ PageManager.prototype = {
 		//this.userStatus = this.countUserStatus();
 		//this.playStatus = this.countPlayStatus();
 		//this.initLoadHtml();
-
-		//请求比赛状态
+		this.page = 1;
+		//请求消息数据
 		this.getMessageList();
 	},
 	btnDown:function(evt){
@@ -239,7 +239,12 @@ PageManager.prototype = {
 				
 				ul.push(li.join(''));
 			}
-			$("#messageList").append(ul.join(''));
+			if(this.page == 1){
+				$("#messageList").html(ul.join(''));
+			}
+			else{
+				$("#messageList").append(ul.join(''));
+			}
 			//this.initiScroll();
 
 			//注销消息事件
