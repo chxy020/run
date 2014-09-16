@@ -188,15 +188,20 @@ PageManager.prototype = {
 	 * 获取比赛状态
 	*/
 	getCompetitionStatus:function(){
+		var local = this.localUserInfo;
+		var user = local.userinfo || {};
+		var play = local.playinfo || {};
+		var device = local.deviceinfo || {};
+
 		var options = {};
 		//上报类型 1 手机端 2网站
 		options.stype = 1;
 		//用户ID,未注册用户无此属性，如果有此属性后台服务会执行用户与设备匹配验证
-		options.uid = "132";
+		options.uid = user.uid || "";
 		//比赛id,现在只有一个比赛 值=1
-		options.mid = 1;
+		options.mid = play.mid || 1;
 		//客户端唯一标识
-		options["X-PID"] = "tre211";
+		options["X-PID"] = device.deviceid || "";
 		var reqUrl = this.bulidSendUrl("/match/querymatchinfo.htm",options);
 		//console.log(reqUrl);
 		this.httpTip.show();
@@ -226,6 +231,49 @@ PageManager.prototype = {
 		/**/
 	},
 
+	/**
+	 * 获取比赛总距离
+	*/
+	getPlayDistance:function(){
+		var local = this.localUserInfo;
+		var user = local.userinfo || {};
+		var play = local.playinfo || {};
+		var device = local.deviceinfo || {};
+
+		var options = {};
+		//上报类型 1 手机端 2网站
+		options.stype = 1;
+		//用户ID,未注册用户无此属性，如果有此属性后台服务会执行用户与设备匹配验证
+		options.uid = user.uid || "";
+		//比赛id,现在只有一个比赛 值=1
+		options.mid = play.mid || 1;
+		//客户端唯一标识
+		options["X-PID"] = device.deviceid || "";
+
+		var reqUrl = this.bulidSendUrl("/match/allrunmatch.htm",options);
+		//console.log(reqUrl);
+		this.httpTip.show();
+		$.ajaxJSONP({
+			url:reqUrl,
+			context:this,
+			success:function(data){
+				//console.log(data);
+				var state = data.state.code - 0;
+				if(state === 0){
+					var distance = this.raceDistance((data.allrun - 0).toFixed(2));
+					var distanceDiv = $("#distanceDiv");
+					distanceDiv.html(distance);
+					distanceDiv.show();
+				}
+				else{
+					var msg = data.state.desc + "(" + state + ")";
+					Base.alert(msg);
+				}
+				this.httpTip.hide();
+			}
+		});
+		/**/
+	},
 
 	/*
 	 * 根据不同的用户状态和比赛状态动态显示页面
@@ -294,9 +342,12 @@ PageManager.prototype = {
 		//比赛距离显示/隐藏
 		if((us == 0 || us == 1) && (ps == 4 || ps == 5)){
 			//未注册或者未登录 并且 比赛阶段/赛后阶段
+			this.getPlayDistance();
+			/*
 			var distance = this.raceDistance();
 			distanceDiv.html(distance);
 			distanceDiv.show();
+			*/
 		}
 		else{
 			distanceDiv.hide();
@@ -504,9 +555,8 @@ PageManager.prototype = {
 	/*
 	 * 获取比赛总距离
 	*/
-	raceDistance:function(){
+	raceDistance:function(km){
 		var html = [];
-		var km = 1024.08;
 		html.push('<p class="p_km">' + km + '<span>KM</span></p>');
 		html.push('<p class="p_distance">比塞总距离</p>');
 		return html.join('');

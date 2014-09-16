@@ -77,7 +77,7 @@ PageManager.prototype = {
 
 		var options = {};
 		//用户ID,
-		options.uid = 77;//user.uid || "";
+		options.uid = user.uid || "";
 		//客户端唯一标识
 		options["X-PID"] = device.deviceid || "";
 		//消息ID

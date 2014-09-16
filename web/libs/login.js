@@ -60,7 +60,7 @@
 $(function(){
 	//测试数据
 	var userinfo = {};
-	userinfo.uid = "132";
+	userinfo.uid = "607";
 	userinfo.bid = "11";
 	userinfo.gid = "8";
 	userinfo.username = "";
@@ -71,7 +71,7 @@ $(function(){
 	var playinfo = {};
 	playinfo.mid = 1;
 	var deviceinfo = {};
-	deviceinfo.deviceid = "tre211";
+	deviceinfo.deviceid = "1CF4A942-04BC-4579-832A-CB27F6BBF206";
 	deviceinfo.platform = "android";
 	window.callbackInit(Base.json2Str(userinfo),Base.json2Str(playinfo),Base.json2Str(deviceinfo),"http://182.92.97.144:8080/");
 });
