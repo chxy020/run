@@ -68,7 +68,7 @@ PageManager.prototype = {
 	pageMove:function(evt){
 		this.moved = true;
 	},
-	
+
 	/**
 	 * 隐藏dom 卸载资源
 	*/
@@ -159,7 +159,7 @@ PageManager.prototype = {
 			this.iScrollY.refresh();
 		}
 	},
-	
+
 	/**
 	 * 请求历史消息列表
 	*/
@@ -177,7 +177,7 @@ PageManager.prototype = {
 		options.cpage = this.page;
 		//每页多少条
 		options.pagesize = 30;
-		
+
 		var reqUrl = this.bulidSendUrl("/match/announcementlist.htm",options);
 		//console.log(reqUrl);
 		this.httpTip.show();
@@ -236,7 +236,7 @@ PageManager.prototype = {
 				li.push('<p>' + addtime + '</p>');
 				li.push('<span class="jt"></span>');
 				li.push('</li>');
-				
+
 				ul.push(li.join(''));
 			}
 			if(this.page == 1){
@@ -251,7 +251,9 @@ PageManager.prototype = {
 			$("#messageList > li").rebind("touchstart",this.btnDown,this);
 			$("#messageList > li").rebind("touchend",this.messageItemUp,this);
 
-			$("#pageBtn").show();
+			if(data.length == 30){
+				$("#pageBtn").show();
+			}
 		}
 	},
 
@@ -270,7 +272,7 @@ PageManager.prototype = {
 				//修改密码
 				$("#updatePwdBtn").rebind("touchstart",this.btnDown,this);
 				$("#updatePwdBtn").rebind("touchend",this.updatePwdBtnUp,this);
-				
+
 				//从队中移除跑友/选择第一棒
 				$("#memberSetupBtn > li").rebind("touchstart",this.btnDown,this);
 				$("#memberSetupBtn > li").rebind("touchend",this.memberSetupBtnUp,this);
@@ -338,7 +340,7 @@ PageManager.prototype = {
 		else{
 		}
 	},
-	
+
 	/**
 	 * 重试
 	*/
@@ -348,7 +350,7 @@ PageManager.prototype = {
 		if(!this.moved){
 		}
 	},
-	
+
 	/**
 	 * 关闭http提示框,中断http请求
 	*/
