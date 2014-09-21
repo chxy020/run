@@ -237,7 +237,8 @@ PageManager.prototype = {
 				//头像
 				var imgpath = list.imgpath || "images/default-head-img.jpg";
 				if(imgpath != "images/default-head-img.jpg"){
-					imgpath = Base.ServerUrl + imgpath;
+					var serverUrl = Base.offlineStore.get("local_server_url",true) + "chSports";
+					imgpath = serverUrl + imgpath;
 				}
 
 				//移除跑友,不显示领队

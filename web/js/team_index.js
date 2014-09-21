@@ -64,7 +64,18 @@ PageManager.prototype = {
 		*/
 	},
 	pageBack:function(evt){
-		Base.pageBack(-1);
+		if(!this.moved){
+			//Base.pageBack(-1);
+			if (Base.mobilePlatform.android){
+				window.JSAndroidBridge.gotoPrePage();
+			}
+			else if(Trafficeye.mobilePlatform.iphone || Trafficeye.mobilePlatform.ipad){
+				window.location.href=("objc:??gotoPrePage");
+			}
+			else{
+				alert("调用本地goPersonal方法,PC不支持.");
+			}
+		}
 	},
 	pageMove:function(evt){
 		this.moved = true;
@@ -305,6 +316,8 @@ PageManager.prototype = {
 		var groupName = user.groupname || "跑队名称";
 		//是否第一棒
 		var isbaton = user.isbaton - 0 || 0;
+		//头像
+		var headimg = user.userphoto || "";
 
 		//显示比赛倒计时和进行时
 		if(ps == 5){
@@ -366,7 +379,7 @@ PageManager.prototype = {
 		if(us == 2 && (ps == 0 || ps == 1 || ps == 2)){
 			//显示创建/加入跑队
 			html.push('<li>');
-			html.push('<div class="head-img"><img src="images/default-head-img.jpg" alt="" width="36" height="36"></div>');
+			html.push('<div class="head-img"><img id="_headimg" src="images/default-head-img.jpg" alt="" width="36" height="36"></div>');
 			html.push('<p>');
 			html.push('<span>' + nickName + '</span>');
 			html.push('</p>');
@@ -377,7 +390,7 @@ PageManager.prototype = {
 		else if(us == 3 && (ps == 0 || ps == 1 || ps == 2)){
 			//显示设置跑队
 			html.push('<li>');
-			html.push('<div class="head-img"><img src="images/default-head-img.jpg" alt="" width="36" height="36"></div>');
+			html.push('<div class="head-img"><img id="_headimg" src="images/default-head-img.jpg" alt="" width="36" height="36"></div>');
 			html.push('<p>');
 			html.push('<span>' + nickName + '</span>');
 			html.push('<span>' + groupName + '</span>');
@@ -393,7 +406,7 @@ PageManager.prototype = {
 			if(isbaton == 1){
 				html.push('<span class="baton">接力棒</span>');
 			}
-			html.push('<div class="head-img"><img src="images/default-head-img.jpg" alt="" width="36" height="36"></div>');
+			html.push('<div class="head-img"><img id="_headimg" src="images/default-head-img.jpg" alt="" width="36" height="36"></div>');
 			html.push('<p>');
 			html.push('<span>' + nickName + '</span>');
 			html.push('<span>' + groupName + '</span>');
@@ -404,7 +417,7 @@ PageManager.prototype = {
 		else if((us == 1) && ps == 0){
 			//显示我要报名
 			html.push('<li>');
-			html.push('<div class="head-img"><img src="images/default-head-img.jpg" alt="" width="36" height="36"></div>');
+			html.push('<div class="head-img"><img id="_headimg" src="images/default-head-img.jpg" alt="" width="36" height="36"></div>');
 			html.push('<p>');
 			html.push('<span>' + nickName + '</span>');
 			//html.push('<span>' + groupName + '</span>');
@@ -416,7 +429,7 @@ PageManager.prototype = {
 		else if(us == 0 && ps == 0){
 			//显示我要注册/登录
 			html.push('<li>');
-			html.push('<div class="head-img"><img src="images/default-head-img.jpg" alt="" width="36" height="36"></div>');
+			html.push('<div class="head-img"><img id="_headimg" src="images/default-head-img.jpg" alt="" width="36" height="36"></div>');
 			html.push('<p>');
 			html.push('<span>未登录</span>');
 			//html.push('<span>' + groupName + '</span>');
@@ -433,6 +446,15 @@ PageManager.prototype = {
 			//跑队设置/创建/加入跑队事件
 			$("#_teamBtn").onbind("touchstart",this.btnDown,this);
 			$("#_teamBtn").onbind("touchend",this.teamBtnUp,this);
+		}
+
+		if(headimg !== ""){
+			//获取图片dom
+			var serverUrl = Base.offlineStore.get("local_server_url",true) + "chSports";
+			var img = $("#_headimg");
+			var imgUrl = serverUrl + headimg;
+			//加载图片
+			Base.imageLoaded(img,imgUrl);
 		}
 	},
 

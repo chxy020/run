@@ -78,7 +78,7 @@ $(function(){
 	//window.callbackInit('{"bid":"1","gid":"1","groupname":"CCC","isbaton":"0","isleader":"1","nickname":"13122233302","uid":"3","username":"","userphoto":"/image/20140916/120_EBFA23903D7E11E4A6869FF80F14043D.jpg"}','{"etime":"","mid":"1","stime":""}','{"deviceid":"99000314911470","platform":"android"}','http://182.92.97.144:8080/')
 	//window.callbackInit('{"bid":"1","gid":"2","groupname":"BBBB","isbaton":"1","isleader":"0","nickname":"13122233306","uid":"6","username":"","userphoto":"/image/20140916/120_EBFA23903D7E11E4A6869FF80F14043D.jpg"}','{"etime":"","mid":"1","stime":""}','{"deviceid":"99000314911470","platform":"android"}','http://182.92.97.144:8080/')
 	//window.callbackInit('{"bid":"","gid":"","groupname":"BBBB","isbaton":"1","isleader":"0","nickname":"13122233306","uid":"","username":"","userphoto":"/image/20140916/120_EBFA23903D7E11E4A6869FF80F14043D.jpg"}','{"etime":"","mid":"1","stime":""}','{"deviceid":"99000314911470","platform":"android"}','http://182.92.97.144:8080/')
-	window.callbackInit('{"bid":"","gid":"","groupname":"CCC","isbaton":"0","isleader":"1","nickname":"13122233302","uid":"2","username":"","userphoto":"/image/20140916/120_EBFA23903D7E11E4A6869FF80F14043D.jpg"}','{"etime":"","mid":"1","stime":""}','{"deviceid":"99000314911470","platform":"android"}','http://182.92.97.144:8080/')
+	window.callbackInit('{"bid":"1","gid":"2","groupname":"CCC","isbaton":"0","isleader":"1","nickname":"13122233305","uid":"5","username":"","userphoto":"/image/20140916/120_EBFA23903D7E11E4A6869FF80F14043D.jpg"}','{"etime":"","mid":"1","stime":""}','{"deviceid":"99000314911470","platform":"android"}','http://182.92.97.144:8080/')
 
 });
 */
