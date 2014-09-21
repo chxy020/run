@@ -60,9 +60,9 @@
 $(function(){
 	//测试数据
 	var userinfo = {};
-	userinfo.uid = "607";
-	userinfo.bid = "11";
-	userinfo.gid = "8";
+	userinfo.uid = "";
+	userinfo.bid = "1";
+	userinfo.gid = "1";
 	userinfo.username = "";
 	userinfo.nikename = "没啥意思a";
 	userinfo.groupname = "爱玩跑队";
@@ -71,8 +71,16 @@ $(function(){
 	var playinfo = {};
 	playinfo.mid = 1;
 	var deviceinfo = {};
-	deviceinfo.deviceid = "1CF4A942-04BC-4579-832A-CB27F6BBF206";
+	deviceinfo.deviceid = "99000314911470";
 	deviceinfo.platform = "android";
-	window.callbackInit(Base.json2Str(userinfo),Base.json2Str(playinfo),Base.json2Str(deviceinfo),"http://182.92.97.144:8080/");
+	//window.callbackInit(Base.json2Str(userinfo),Base.json2Str(playinfo),Base.json2Str(deviceinfo),"http://182.92.97.144:8080/");
+	//window.callbackInit('{"bid":1,"gid":3,"groupname":"CCC","isbaton":"0","isleader":"0","nickname":"13122233308","uid":"","username":"","userphoto":"/image/20140916/120_EBFA23903D7E11E4A6869FF80F14043D.jpg"}','{"etime":"","mid":"1","stime":""}','{"deviceid":"99000314911470","platform":"android"}','http://182.92.97.144:8080/')
+	//window.callbackInit('{"bid":"1","gid":"1","groupname":"CCC","isbaton":"0","isleader":"1","nickname":"13122233302","uid":"3","username":"","userphoto":"/image/20140916/120_EBFA23903D7E11E4A6869FF80F14043D.jpg"}','{"etime":"","mid":"1","stime":""}','{"deviceid":"99000314911470","platform":"android"}','http://182.92.97.144:8080/')
+	//window.callbackInit('{"bid":"1","gid":"2","groupname":"BBBB","isbaton":"1","isleader":"0","nickname":"13122233306","uid":"6","username":"","userphoto":"/image/20140916/120_EBFA23903D7E11E4A6869FF80F14043D.jpg"}','{"etime":"","mid":"1","stime":""}','{"deviceid":"99000314911470","platform":"android"}','http://182.92.97.144:8080/')
+	//window.callbackInit('{"bid":"","gid":"","groupname":"BBBB","isbaton":"1","isleader":"0","nickname":"13122233306","uid":"","username":"","userphoto":"/image/20140916/120_EBFA23903D7E11E4A6869FF80F14043D.jpg"}','{"etime":"","mid":"1","stime":""}','{"deviceid":"99000314911470","platform":"android"}','http://182.92.97.144:8080/')
+	window.callbackInit('{"bid":"","gid":"","groupname":"CCC","isbaton":"0","isleader":"1","nickname":"13122233302","uid":"2","username":"","userphoto":"/image/20140916/120_EBFA23903D7E11E4A6869FF80F14043D.jpg"}','{"etime":"","mid":"1","stime":""}','{"deviceid":"99000314911470","platform":"android"}','http://182.92.97.144:8080/')
+
 });
 */
+
+

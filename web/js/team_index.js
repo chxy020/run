@@ -234,7 +234,7 @@ PageManager.prototype = {
 	/**
 	 * 获取比赛总距离
 	*/
-	getPlayDistance:function(){
+	getPlayDistance:function(isLoad){
 		var local = this.localUserInfo;
 		var user = local.userinfo || {};
 		var play = local.playinfo || {};
@@ -252,7 +252,10 @@ PageManager.prototype = {
 
 		var reqUrl = this.bulidSendUrl("/match/allrunmatch.htm",options);
 		//console.log(reqUrl);
-		this.httpTip.show();
+		if(isLoad){
+			//定时器请求,不显示loading
+			this.httpTip.show();
+		}
 		$.ajaxJSONP({
 			url:reqUrl,
 			context:this,
@@ -260,10 +263,14 @@ PageManager.prototype = {
 				//console.log(data);
 				var state = data.state.code - 0;
 				if(state === 0){
-					var distance = this.raceDistance((data.allrun - 0).toFixed(2));
+					var km = (data.allrun - 0) / 1000;
+					var distance = this.raceDistance(km.toFixed(2));
 					var distanceDiv = $("#distanceDiv");
 					distanceDiv.html(distance);
 					distanceDiv.show();
+
+					//开定时器
+					this.playTimeDistance();
 				}
 				else{
 					var msg = data.state.desc + "(" + state + ")";
@@ -290,13 +297,14 @@ PageManager.prototype = {
 		//比赛状态
 		var ps = this.playStatus;
 		//console.log(us,ps);
-
 		var local = this.localUserInfo;
 		var user = local.userinfo || {};
 		//用户昵称
-		var nikeName = user.nikename || "用户昵称";
+		var nickName = user.nickname || "用户昵称";
 		//跑队名称
 		var groupName = user.groupname || "跑队名称";
+		//是否第一棒
+		var isbaton = user.isbaton - 0 || 0;
 
 		//显示比赛倒计时和进行时
 		if(ps == 5){
@@ -342,7 +350,7 @@ PageManager.prototype = {
 		//比赛距离显示/隐藏
 		if((us == 0 || us == 1) && (ps == 4 || ps == 5)){
 			//未注册或者未登录 并且 比赛阶段/赛后阶段
-			this.getPlayDistance();
+			this.getPlayDistance(true);
 			/*
 			var distance = this.raceDistance();
 			distanceDiv.html(distance);
@@ -360,7 +368,7 @@ PageManager.prototype = {
 			html.push('<li>');
 			html.push('<div class="head-img"><img src="images/default-head-img.jpg" alt="" width="36" height="36"></div>');
 			html.push('<p>');
-			html.push('<span>用户昵称</span>');
+			html.push('<span>' + nickName + '</span>');
 			html.push('</p>');
 			html.push('</li>');
 			html.push('<li id="_teamBtn" data="add">创建/加入跑队</li>');
@@ -371,7 +379,7 @@ PageManager.prototype = {
 			html.push('<li>');
 			html.push('<div class="head-img"><img src="images/default-head-img.jpg" alt="" width="36" height="36"></div>');
 			html.push('<p>');
-			html.push('<span>' + nikeName + '</span>');
+			html.push('<span>' + nickName + '</span>');
 			html.push('<span>' + groupName + '</span>');
 			html.push('</p>');
 			html.push('</li>');
@@ -381,11 +389,14 @@ PageManager.prototype = {
 		else if((us == 2 || us == 3) && ps == 3){
 			//显示跑队名称
 			html.push('<li>');
-			html.push('<span class="baton">接力棒</span>');
+			//判断是否第一棒
+			if(isbaton == 1){
+				html.push('<span class="baton">接力棒</span>');
+			}
 			html.push('<div class="head-img"><img src="images/default-head-img.jpg" alt="" width="36" height="36"></div>');
 			html.push('<p>');
-			html.push('<span>用户昵称</span>');
-			html.push('<span>所属跑队名称</span>');
+			html.push('<span>' + nickName + '</span>');
+			html.push('<span>' + groupName + '</span>');
 			html.push('</p>');
 			html.push('</li>');
 			teamList.removeClass("login-btn");
@@ -395,7 +406,7 @@ PageManager.prototype = {
 			html.push('<li>');
 			html.push('<div class="head-img"><img src="images/default-head-img.jpg" alt="" width="36" height="36"></div>');
 			html.push('<p>');
-			html.push('<span>' + nikeName + '</span>');
+			html.push('<span>' + nickName + '</span>');
 			//html.push('<span>' + groupName + '</span>');
 			html.push('</p>');
 			html.push('</li>');
@@ -481,6 +492,7 @@ PageManager.prototype = {
 		var obj = this.playData;
 		var now = new Date();
 		var startTime = obj.starttime;
+		//console.log(startTime);
 		//startTime = "2014-09-30 8:0:0";
 		var sDate = this.formatDate(startTime);
 		//判断是倒计时 还是 正计时
@@ -504,6 +516,9 @@ PageManager.prototype = {
 				time = "距比赛还有：" + time;
 			}
 		}
+		//启动计时time
+		this.playTimeCountDown();
+
 		return time;
 	},
 
@@ -524,14 +539,14 @@ PageManager.prototype = {
 
 	formatMs:function(ms){
 		//debugger
-		var time = ms / 1000;
+		var time = parseInt(ms / 1000);
 		if (time <= 60) {
 			return "<span>" + time + "</span><s>秒</s>";
 		} else if (time > 60 && time < 3600) {
 			//秒
 			var second = parseInt(time % 60);
 			//分钟
-			var minute = parseInt((ms % 3600) / 60);
+			var minute = parseInt((time % 3600) / 60);
 			return "<span>" + minute + "</span><s>分</s>" + "<span>" + second + "</span><s>秒</s>";
 		} else if (time >= 3600 && time < 86400) {
 			//秒
@@ -544,7 +559,7 @@ PageManager.prototype = {
 			//秒
 			var second = parseInt(time % 60);
 			//分钟
-			var minute = parseInt((ms % 3600) / 60);
+			var minute = parseInt((time % 3600) / 60);
 			//小时
 			var temp_hour = parseInt((time % 86400) / 3600);
 			var day = parseInt(time / 86400);
@@ -558,7 +573,7 @@ PageManager.prototype = {
 	raceDistance:function(km){
 		var html = [];
 		html.push('<p class="p_km">' + km + '<span>KM</span></p>');
-		html.push('<p class="p_distance">比塞总距离</p>');
+		html.push('<p class="p_distance">比赛总距离</p>');
 		return html.join('');
 	},
 
@@ -569,21 +584,21 @@ PageManager.prototype = {
 		var status;
 		var local = this.localUserInfo;
 		var user = local.userinfo || {};
-		var uid = user.uid || "0";
+		var uid = user.uid || "";
 		//报名ID
-		var bid = user.bid || "0";
+		var bid = user.bid || "";
 		//组ID
-		var gid = user.gid || "0";
-		if(uid == "0"){
-			//如果uid等于"0",就标识未注册状态
+		var gid = user.gid || "";
+		if(uid == ""){
+			//如果uid等于"",就标识未注册状态
 			status = 0;
 		}
-		else if(bid == "0"){
-			//如果bid=="0",就标识未报名
+		else if(bid == ""){
+			//如果bid=="",就标识未报名
 			status = 1;
 		}
-		else if(gid == "0"){
-			//如果gid=="0",就标识未组队
+		else if(gid == ""){
+			//如果gid=="",就标识未组队
 			status = 2;
 		}
 		else{
@@ -602,7 +617,7 @@ PageManager.prototype = {
 		var local = this.localUserInfo;
 		var user = local.userinfo || {};
 		//组ID
-		var gid = user.gid || "0";
+		var gid = user.gid || "";
 
 		//报名状态1可以报名 2报名未开始  3 报名过期
 		var signstate = obj.signstate - 0 || 1;
@@ -620,7 +635,7 @@ PageManager.prototype = {
 		}
 
 		if(groupstate == 1){
-			if(gid == "0"){
+			if(gid == ""){
 				//如果没有组ID,那么应该就是组队阶段
 				//组队阶段
 				status = 1;
@@ -675,6 +690,29 @@ PageManager.prototype = {
 		var reqParams = Base.httpData2Str(data);
 		var reqUrl = url + reqParams;
 		return reqUrl;
+	},
+
+	/**
+	 * 比赛倒计时定时器
+	*/
+	playTimeCountDown:function(){
+		var t = this;
+		var playTimeDiv = $("#playTimeDiv");
+		this.tout = setTimeout(function(){
+			var time = t.countPlayTime();
+			playTimeDiv.html(time);
+		},1000);
+	},
+
+	/**
+	 * 比赛总距离定时器,5分钟一次
+	*/
+	playTimeDistance:function(){
+		var t = this;
+		var time = 5 * 60 * 1000;
+		this.tout = setTimeout(function(){
+			t.getPlayDistance(false);
+		},time);
 	},
 
 	/**
