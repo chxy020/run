@@ -47,21 +47,10 @@ PageManager.prototype = {
 		
 	},
 	pageLoad:function(evt){
-		var w = $(window).width();
-		var h = $(window).height();
-		//this.ratio = window.devicePixelRatio || 1;
-		this.bodyWidth = w;
-		//this.bodyHeight = h;
-
-		/*
-		//更新比赛状态/用户状态初始化页面
-		this.userStatus = 3;
-		this.playStatus = 2;
-		this.initLoadHtml();
-
-		//请求比赛状态
-		this.getCompetitionStatus();
-		*/
+		var w = $(window).width() || 320;
+		//图片按9:5缩放
+		var h = parseInt(5/9 * w);
+		$("#viewport").css({"height":h + "px"});
 	},
 	pageBack:function(evt){
 		if(!this.moved){
@@ -69,7 +58,7 @@ PageManager.prototype = {
 			if (Base.mobilePlatform.android){
 				window.JSAndroidBridge.gotoPrePage();
 			}
-			else if(Trafficeye.mobilePlatform.iphone || Trafficeye.mobilePlatform.ipad){
+			else if(Base.mobilePlatform.iphone || Base.mobilePlatform.ipad){
 				window.location.href=("objc:??gotoPrePage");
 			}
 			else{
@@ -223,7 +212,7 @@ PageManager.prototype = {
 				//console.log(data);
 				var state = data.state.code - 0;
 				if(state === 0){
-					this.changeSlideImage(data);
+					//this.changeSlideImage(data);
 					//保存数据
 					this.playData = data;
 					
@@ -302,6 +291,7 @@ PageManager.prototype = {
 		var playStatus = $("#playStatus");
 		var distanceDiv = $("#distanceDiv");
 		var teamList = $("#teamList");
+		var thirdWeb = $("#thirdWeb");
 
 		//用户状态
 		var us = this.userStatus;
@@ -319,6 +309,9 @@ PageManager.prototype = {
 		//头像
 		var headimg = user.userphoto || "";
 
+		//页面以显示高度
+		var showHeight = 44;
+
 		//显示比赛倒计时和进行时
 		if(ps == 5){
 			//结束比赛,隐藏时间
@@ -329,35 +322,56 @@ PageManager.prototype = {
 			var time = this.countPlayTime();
 			playTimeDiv.html(time);
 			playTimeDiv.show();
+
+			showHeight = showHeight + 50;
 		}
 		
 		//隐藏文字提示
-		if((us == 2 || us == 3) && (ps == 3 || ps == 0)){
+		//if((us == 2 || us == 3) && (ps == 3 || ps == 0)){
+		if( (ps == 0) || 
+			((us == 2 || us == 3) && ps == 1) || 
+			((us == 2 || us == 3) && ps == 3) ){
 			//未组队或者已组队,并且比赛状态再比赛前1小时
 			//这时候需要隐藏文字提示
 			playStatus.hide();
 		}
 		else{
-			var text = [["",""],["",""],["",""],["",""]];
-			//未注册
-			text[0].push("2014北京要跑24小时接力赛报名阶段已结束");
-			text[0].push("2014北京要跑24小时接力赛报名阶段已结束");
-			text[0].push("2014北京要跑24小时接力赛正在进行中");
-			text[0].push("2014北京要跑24小时接力赛正已完赛");
-			//未登录
-			text[1].push("2014北京要跑24小时接力赛报名阶段已结束");
-			text[1].push("2014北京要跑24小时接力赛报名阶段已结束");
-			text[1].push("2014北京要跑24小时接力赛正在进行中");
-			text[1].push("2014北京要跑24小时接力赛正已完赛");
-			//未组队
-			text[2].push("2014年北京要跑24小时接力赛组队阶段已结束,跑队成员已不可变更.");
-			//已组队
-			text[3].push("2014年北京要跑24小时接力赛组队阶段已结束,跑队成员已不可变更.");
-			
+			var text = [[],[],[],[]];
+			text[0].push("");
+			text[0].push("2014年北京要跑24小时接力赛报名阶段已结束");
+			text[0].push("2014年北京要跑24小时接力赛报名阶段已结束");
+			text[0].push("2014年北京要跑24小时接力赛报名阶段已结束");
+			text[0].push("2014年北京要跑24小时接力赛正在进行中");
+			text[0].push("2014年北京要跑24小时接力赛已完赛");
+			text[1].push("");
+			text[1].push("2014年北京要跑24小时接力赛报名阶段已结束");
+			text[1].push("2014年北京要跑24小时接力赛报名阶段已结束");
+			text[1].push("2014年北京要跑24小时接力赛报名阶段已结束");
+			text[1].push("2014年北京要跑24小时接力赛正在进行中");
+			text[1].push("2014年北京要跑24小时接力赛已完赛");
+			text[2].push("");
+			text[2].push("");
+			text[2].push("2014年北京要跑24小时接力赛组队阶段已结束，跑队成员已不可变更.");
+			text[2].push("");
+			text[2].push("");
+			text[2].push("");
+			text[3].push("");
+			text[3].push("");
+			text[3].push("2014年北京要跑24小时接力赛组队阶段已结束，跑队成员已不可变更.");
+			text[3].push("");
+			text[3].push("");
+			text[3].push("");
 			//获取文字数据
 			var t = text[us][ps];
-			playStatus.html(t);
-			playStatus.show();
+			if(t !== ""){
+				playStatus.html(t);
+				playStatus.show();
+
+				showHeight = showHeight + playStatus.height();
+			}
+			else{
+				playStatus.hide();
+			}
 		}
 
 		//比赛距离显示/隐藏
@@ -369,6 +383,8 @@ PageManager.prototype = {
 			distanceDiv.html(distance);
 			distanceDiv.show();
 			*/
+
+			showHeight = showHeight + distanceDiv.height();
 		}
 		else{
 			distanceDiv.hide();
@@ -376,7 +392,31 @@ PageManager.prototype = {
 		
 		var html = [];
 		//根据状态显示操作按钮
-		if(us == 2 && (ps == 0 || ps == 1 || ps == 2)){
+		if(us == 0 && ps == 0){
+			//显示我要注册/登录
+			html.push('<li>');
+			html.push('<div class="head-img"><img id="_headimg" src="images/default-head-img.jpg" alt="" width="36" height="36"></div>');
+			html.push('<p>');
+			html.push('<span>未登录</span>');
+			//html.push('<span>' + groupName + '</span>');
+			html.push('</p>');
+			html.push('</li>');
+			html.push('<li id="_loginBtn" data="setup">注册/登录</li>');
+			teamList.addClass("login-btn");
+		}
+		else if((us == 1) && ps == 0){
+			//显示我要报名
+			html.push('<li>');
+			html.push('<div class="head-img"><img id="_headimg" src="images/default-head-img.jpg" alt="" width="36" height="36"></div>');
+			html.push('<p>');
+			html.push('<span>' + nickName + '</span>');
+			//html.push('<span>' + groupName + '</span>');
+			html.push('</p>');
+			html.push('</li>');
+			html.push('<li id="_signBtn" data="setup">我要报名</li>');
+			teamList.addClass("login-btn");
+		}
+		else if(us == 2 && (ps == 0 || ps == 1)){
 			//显示创建/加入跑队
 			html.push('<li>');
 			html.push('<div class="head-img"><img id="_headimg" src="images/default-head-img.jpg" alt="" width="36" height="36"></div>');
@@ -414,30 +454,6 @@ PageManager.prototype = {
 			html.push('</li>');
 			teamList.removeClass("login-btn");
 		}
-		else if((us == 1) && ps == 0){
-			//显示我要报名
-			html.push('<li>');
-			html.push('<div class="head-img"><img id="_headimg" src="images/default-head-img.jpg" alt="" width="36" height="36"></div>');
-			html.push('<p>');
-			html.push('<span>' + nickName + '</span>');
-			//html.push('<span>' + groupName + '</span>');
-			html.push('</p>');
-			html.push('</li>');
-			html.push('<li id="_signBtn" data="setup">我要报名</li>');
-			teamList.addClass("login-btn");
-		}
-		else if(us == 0 && ps == 0){
-			//显示我要注册/登录
-			html.push('<li>');
-			html.push('<div class="head-img"><img id="_headimg" src="images/default-head-img.jpg" alt="" width="36" height="36"></div>');
-			html.push('<p>');
-			html.push('<span>未登录</span>');
-			//html.push('<span>' + groupName + '</span>');
-			html.push('</p>');
-			html.push('</li>');
-			html.push('<li id="_loginBtn" data="setup">注册/登录</li>');
-			teamList.addClass("login-btn");
-		}
 
 		if(html.length > 0){
 			teamList.html(html.join(''));
@@ -446,6 +462,8 @@ PageManager.prototype = {
 			//跑队设置/创建/加入跑队事件
 			$("#_teamBtn").onbind("touchstart",this.btnDown,this);
 			$("#_teamBtn").onbind("touchend",this.teamBtnUp,this);
+
+			showHeight = showHeight + teamList.height();
 		}
 
 		if(headimg !== ""){
@@ -455,6 +473,24 @@ PageManager.prototype = {
 			var imgUrl = serverUrl + headimg;
 			//加载图片
 			Base.imageLoaded(img,imgUrl);
+		}
+
+		//判断是否显示第三方网页
+		if((us == 0 || us == 1) && ( ps != 0)){
+			thirdWeb.show();
+
+			//改变第三方网页高度,让沾满全屏
+			var w = $(window).width() || 320;
+			var wh = $(window).height();
+			//图片按9:5缩放
+			var h = parseInt(5/9 * w);
+			$("#viewport").css({"height":h + "px"});
+
+			var th = wh - showHeight - h;
+			thirdWeb.height(th);
+		}
+		else{
+			thirdWeb.hide();
 		}
 	},
 
@@ -510,7 +546,7 @@ PageManager.prototype = {
 	*/
 	countPlayTime:function(){
 		//var time = "距比赛还有：<span>18</span><s>天</s><span>52</span><s>时</s><span>25</span><s>分</s><span>42</span><s>秒</s>";
-		var time = "";
+		var time = "比赛未开始";
 		var obj = this.playData;
 		var now = new Date();
 		var startTime = obj.starttime;
@@ -521,7 +557,7 @@ PageManager.prototype = {
 		//1比赛开始 2未开始3 比赛结束
 		var matchstate = obj.matchstate - 0;
 		//matchstate = 2;
-
+		
 		if(matchstate == 1){
 			//正计时
 			if(sDate != null){

@@ -13,19 +13,22 @@
 		html {
 			-ms-touch-action: none;
 		}
+		body{
+			overflow: hidden;
+		}
 		#viewport {
 			position: relative;
-			width: 320px;
-			height: 142px;
+			width: 100%;
+			height: 178px;
 			margin:0 auto;
 			overflow:hidden;
 		}
 
-		
+		/*
 		#scroller {
 			z-index: 1;
 			width: 960px;
-			height: 142px;
+			height: 178px;
 			-webkit-transform: translateZ(0);
 			-moz-transform: translateZ(0);
 			-ms-transform: translateZ(0);
@@ -46,7 +49,7 @@
 
 		.slide {
 			width: 320px;
-			height: 142px;
+			height: 178px;
 			text-align:center;
 			float: left;
 		}
@@ -54,8 +57,14 @@
 		.scroller{
 			width:320px;
 		}
-		
-		
+		*/
+		.view {
+			position: relative;
+			width: 100%;
+			height:500px;
+			margin:0 auto;
+			display: none;
+		}
 	</style>
 </head>
 <body>
@@ -64,16 +73,13 @@
 		<div class="header_text">2014要跑24小时接力赛</div>
 	</div>
 	
-	<!-- 横向轮播结构 -->
+	<div id="viewport">
+		<iframe frameborder="0" width="100%" height="100%" src="http://192.168.1.109/runserver/web/team_img.html"></iframe>
+	</div>
+	<!-- 横向轮播结构
 	<div id="viewport">
 		<div id="wrapper">
 			<div id="scroller">
-				<!--
-				<div class="slide">
-					<div class="t_img_box imgload"></div>
-					<img src="images/banner.jpg" alt="" width="320"/>
-				</div>
-				-->
 			</div>
 		</div>
 	</div>
@@ -84,6 +90,7 @@
 			</ul>
 		</div>
 	</div>
+	 -->
 
 	<!-- 比赛倒计时/进行时 -->
 	<div id="playTimeDiv" class="d-time">
@@ -100,7 +107,13 @@
 	<ul id="teamList" class="teamlist" style="display:none;">
 		
 	</ul>
-
+	
+	<!--第三方网页显示-->
+	<div id="thirdWeb" class="view">
+		<!--http://image.yaopao.net/html/2014_longwan_24hours/team_text.html-->
+		<iframe frameborder="0" width="100%" height="100%" src="http://192.168.1.109/runserver/web/team_text.html"></iframe>
+	</div>
+	
 	<!-- 未组队显示创建/加入跑队
 	<ul id="addTeam" class="teamlist login-btn" style="display:none;">
 		<li>
