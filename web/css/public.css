@@ -11,7 +11,7 @@ a:active { color: #6d7579; }
 .clear { clear: both }
 @font-face { font-family: 'impactregular'; src: url('impact-webfont.eot'); src: url('impact-webfont.eot?#iefix') format('embedded-opentype'), url('impact-webfont.woff') format('woff'), url('impact-webfont.ttf') format('truetype'), url('impact-webfont.svg#impactregular') format('svg'); font-weight: normal; font-style: normal; }
 /*-----------------------------------------public style----------------------------------------*/
-.header { position: relative; z-index: 99; height: 44px; padding: 0 50px; line-height: 44px; text-align: center; overflow: hidden; background: #ff3300; color: #ffffff }
+.header { position: relative; z-index: 99; height: 44px; padding: 0 50px; line-height: 44px; text-align: center; overflow: hidden; background: #007bc7; color: #ffffff }
 .header_text { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:100%; font-size:16px; }
 .tbtn-l, .tbtn-r { position: absolute; cursor: pointer; width: 50px; height: 44px; }
 .tbtn-l { left: 0; top: 0; }
@@ -30,8 +30,8 @@ a:active { color: #6d7579; }
 .teamlist li.curr { background-color:#eee }
 .h-btn { margin-top: 1px; height: 40px; display: -webkit-box; }
 .Information:after { content:""; display:block; height:0; clear:both; visibility:hidden; }
-.h-btn li { -webkit-box-flex: 1; width:0; text-align: center; color:#fff; font-size:16px; background-color:#666699; line-height:40px; }
-.h-btn li.curr { background-color:#47476b; color:#a6a6a6 }
+.h-btn li { -webkit-box-flex: 1; width:0; text-align: center; color:#fff; font-size:16px; background-color:#8fc31f; line-height:40px; }
+.h-btn li.curr { background-color:#6f961a; color:#bbcc96 }
 .h-btn li:last-child { margin-left: 1px; }
 .h-btn li:only-child { margin-left: 0; }
 .red-btn li { background-color:#ff3300; }
@@ -48,7 +48,7 @@ a:active { color: #6d7579; }
 .indicator > li { height:6px; width:6px; background:url(../images/dpi1/register-icon.png) no-repeat -16px bottom; margin-right:10px; overflow:hidden; }
 .indicator > li.active { background-position: left bottom; }
 .indicator > li:last-child { margin-right:0; }
-.d-time { height:50px; line-height:50px; background-color:#ffc000; color:#000; font-size:12px; text-align:left;padding-left:10px;}
+.d-time { height:50px; line-height:50px; background-color:#ffc000; color:#000; font-size:12px; text-align:center }
 .d-time span { font-size:26px; font-family:"impactregular"; margin-left:8px; vertical-align:-2px }
 .d-time span:first-child { margin-left:6px; }
 .d-time s { font-size:14px; text-decoration:none; margin-left:3px; }
@@ -61,14 +61,14 @@ a:active { color: #6d7579; }
 .login-btn .head-img { margin-top: 8px; }
 .login-btn li:first-child { width: 57%; }
 .login-btn li:last-child { width: 43%; background-color:#666698; line-height:50px; color:#fff; font-size:16px; text-align:center }
-.login-btn li:last-child.curr { background-color:#47476b; color:#a6a6a6; }
+.login-btn li:last-child.curr { background-color:#6f961a; color:#bbcc96; }
 .removem li.curr_d { background:url(../images/dpi1/dui.png) no-repeat right center }
 .removem li.curr { background:#eee url(../images/dpi1/dui.png) no-repeat right center }
 .prompt { margin:0 10px 10px 40px; line-height:160%; color: #595959; font-size: 14px; }
 .inputDiv { margin-bottom:10px; padding-left:40px; background:url(../images/dpi1/pw.png) no-repeat 10px center; }
 .inputDiv.c_team { background: url(../images/dpi1/text.png) no-repeat 10px center; }
 .inputDiv input { width:100%; height:30px; color:#000; font-size: 14px; }
-.p_prompt { border-top:1px solid #ea700d; border-bottom:1px solid #ea700d; background:#fdebdd; line-height:20px; text-align:left; padding:10px; }
+.p_prompt { border-top:1px solid #ea700d; border-bottom:1px solid #ea700d; background:#fdebdd; line-height:20px; text-align:center; padding:10px; }
 /*.teamlist li p { line-height: 120%; box-sizing: border-box; height: 50px; display: table-cell;vertical-align: middle; font-size: 14px; padding-top: 9px; }*/
 .teamlist li p span { display:block; font-size:14px }
 .Information li input { float:right; text-align:right; height:30px; line-height:30px; color:#a5a5a5; width:150px; border:none; }
@@ -79,7 +79,7 @@ a:active { color: #6d7579; }
 .nccc li { font-size: 14px; color: #606366; border: 1px solid #c1c1c1; padding:4px 10px; margin-bottom: 10px; background-color: #FFF; }
 .nccc li h2 input { height: 30px; font-size: 16px; color: #606366; width: 100%; }
 .btnwrap { margin-top:30px; margin-left:10px; margin-right:10px; }
-.btnwrap li { -webkit-box-flex: 1; width: 0; text-align: center; color: #fff; font-size: 16px; background-color: #666699; line-height: 40px; margin:0 10px; }
+.btnwrap li { -webkit-box-flex: 1; width: 0; text-align: center; color: #fff; font-size: 16px; background-color: #8fc31f; line-height: 40px; margin:0 10px; }
 .btnwrap li:last-child { margin-left:none; }
 .selbox { margin: 20px; }
 .selbox li { margin-bottom: 10px; }
