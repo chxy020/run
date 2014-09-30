@@ -384,7 +384,7 @@ PageManager.prototype = {
 			distanceDiv.show();
 			*/
 
-			showHeight = showHeight + distanceDiv.height();
+			showHeight = showHeight + 108;
 		}
 		else{
 			distanceDiv.hide();
