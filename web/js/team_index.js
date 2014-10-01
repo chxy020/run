@@ -477,8 +477,6 @@ PageManager.prototype = {
 
 		//判断是否显示第三方网页
 		if((us == 0 || us == 1) && ( ps != 0)){
-			thirdWeb.show();
-
 			//改变第三方网页高度,让沾满全屏
 			var w = $(window).width() || 320;
 			var wh = $(window).height();
@@ -486,8 +484,10 @@ PageManager.prototype = {
 			var h = parseInt(5/9 * w);
 			$("#viewport").css({"height":h + "px"});
 
-			var th = wh - showHeight - h;
+			var th = wh - showHeight - h - 4;
 			thirdWeb.height(th);
+
+			thirdWeb.show();
 		}
 		else{
 			thirdWeb.hide();
