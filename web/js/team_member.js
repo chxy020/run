@@ -245,8 +245,8 @@ PageManager.prototype = {
 				//头像
 				var imgpath = list.imgpath || "images/default-head-img.jpg";
 				if(imgpath != "images/default-head-img.jpg"){
-					var serverUrl = Base.offlineStore.get("local_server_url",true) + "chSports";
-					imgpath = serverUrl + imgpath;
+					//var serverUrl = Base.offlineStore.get("local_server_url",true) + "chSports";
+					imgpath = imgpath;
 				}
 
 				li.push('<li id="member_' + i + '">');

@@ -149,6 +149,9 @@ PageManager.prototype = {
 				if(state === 0){
 					this.memberData = data;
 					this.changeMemberHtml(data);
+
+					//启动定时器,5秒一次
+					this.getMemberListTime();
 				}
 				else{
 					var msg = data.state.desc + "(" + state + ")";
@@ -178,8 +181,8 @@ PageManager.prototype = {
 				//头像
 				var imgpath = list.imgpath || "images/default-head-img.jpg";
 				if(imgpath != "images/default-head-img.jpg"){
-					var serverUrl = Base.offlineStore.get("local_server_url",true) + "chSports";
-					imgpath = serverUrl + imgpath;
+					//var serverUrl = Base.offlineStore.get("local_server_url",true) + "chSports";
+					imgpath = imgpath;
 				}
 
 				li.push('<li id="member_' + i + '">');
@@ -256,6 +259,15 @@ PageManager.prototype = {
 		return reqUrl;
 	},
 
+	/**
+	 * 启动定时器,自动刷新列表
+	*/
+	getMemberListTime:function(){
+		var t = this;
+		setTimeout(function(){
+			t.getTeamMemberList();
+		},5000);
+	},
 
 	/**
 	 * 关闭提示框
