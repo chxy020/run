@@ -244,8 +244,8 @@ PageManager.prototype = {
 				//头像
 				var imgpath = list.imgpath || "images/default-head-img.jpg";
 				if(imgpath != "images/default-head-img.jpg"){
-					//var serverUrl = Base.offlineStore.get("local_server_url",true) + "chSports";
-					imgpath = imgpath;
+					var serverUrl = Base.offlineStore.get("local_picserver_url",true);
+					imgpath = serverUrl + imgpath;
 				}
 
 				//设置第一棒,原来的第一棒不显示

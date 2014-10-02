@@ -181,8 +181,8 @@ PageManager.prototype = {
 				//头像
 				var imgpath = list.imgpath || "images/default-head-img.jpg";
 				if(imgpath != "images/default-head-img.jpg"){
-					//var serverUrl = Base.offlineStore.get("local_server_url",true) + "chSports";
-					imgpath = imgpath;
+					var serverUrl = Base.offlineStore.get("local_picserver_url",true);
+					imgpath = serverUrl + imgpath;
 				}
 
 				li.push('<li id="member_' + i + '">');
@@ -198,7 +198,7 @@ PageManager.prototype = {
 				ul.push(li.join(''));
 			}
 
-			$("#memberList").append(ul.join(''));
+			$("#memberList").html(ul.join(''));
 
 			this.initiScroll();
 		}
@@ -266,7 +266,7 @@ PageManager.prototype = {
 		var t = this;
 		setTimeout(function(){
 			t.getTeamMemberList();
-		},5000);
+		},30000);
 	},
 
 	/**

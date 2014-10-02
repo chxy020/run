@@ -9,7 +9,7 @@
 
 (function(window){
 	//初始化页面函数
-	window.callbackInit = function(userinfo,playinfo,deviceinfo,serverurl){
+	window.callbackInit = function(userinfo,playinfo,deviceinfo,serverurl,picurl){
 		var obj = {};
 		if(userinfo != ""){
 			userinfo = Base.str2Json(userinfo);
@@ -29,6 +29,8 @@
 		//保存请求地址到本地
 		Base.offlineStore.set("local_server_url",serverurl,true);
 		//调用页面初始化方法
+		//保存图片URL
+		Base.offlineStore.set("local_picserver_url",picurl,true);
 		initPage();
 	};
 

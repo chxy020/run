@@ -468,9 +468,9 @@ PageManager.prototype = {
 
 		if(headimg !== ""){
 			//获取图片dom
-			//var serverUrl = Base.offlineStore.get("local_server_url",true) + "chSports";
+			var serverUrl = Base.offlineStore.get("local_picserver_url",true);
 			var img = $("#_headimg");
-			var imgUrl = headimg;
+			var imgUrl = serverUrl + headimg;
 			//加载图片
 			Base.imageLoaded(img,imgUrl);
 		}
