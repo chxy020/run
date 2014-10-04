@@ -62,7 +62,7 @@ a:active { color: #6d7579; }
 .login-btn li:first-child { width: 57%; }
 .login-btn li:last-child { width: 43%; background-color:#666698; line-height:50px; color:#fff; font-size:16px; text-align:center }
 .login-btn li:last-child.curr { background-color:#6f961a; color:#bbcc96; }
-.removem li.curr_d { background:url(../images/dpi1/dui.png) no-repeat right center }
+.removem li.curr_d { background:url(../images/dpi1/dui.png) no-repeat 97% center }
 .removem li.curr { background:#eee url(../images/dpi1/dui.png) no-repeat right center }
 .prompt { margin:0 10px 10px 40px; line-height:160%; color: #595959; font-size: 14px; }
 .inputDiv { margin-bottom:10px; padding-left:40px; background:url(../images/dpi1/pw.png) no-repeat 10px center; }
