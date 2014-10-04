@@ -48,7 +48,7 @@ a:active { color: #6d7579; }
 .indicator > li { height:6px; width:6px; background:url(../images/dpi1/register-icon.png) no-repeat -16px bottom; margin-right:10px; overflow:hidden; }
 .indicator > li.active { background-position: left bottom; }
 .indicator > li:last-child { margin-right:0; }
-.d-time { height:50px; line-height:50px; background-color:#ffc000; color:#000; font-size:12px; text-align:center }
+.d-time { height:50px; line-height:50px; background-color:#ffc000; color:#000; font-size:12px; text-align:left;padding-left:10px; }
 .d-time span { font-size:26px; font-family:"impactregular"; margin-left:8px; vertical-align:-2px }
 .d-time span:first-child { margin-left:6px; }
 .d-time s { font-size:14px; text-decoration:none; margin-left:3px; }
@@ -68,7 +68,7 @@ a:active { color: #6d7579; }
 .inputDiv { margin-bottom:10px; padding-left:40px; background:url(../images/dpi1/pw.png) no-repeat 10px center; }
 .inputDiv.c_team { background: url(../images/dpi1/text.png) no-repeat 10px center; }
 .inputDiv input { width:100%; height:30px; color:#000; font-size: 14px; }
-.p_prompt { border-top:1px solid #ea700d; border-bottom:1px solid #ea700d; background:#fdebdd; line-height:20px; text-align:center; padding:10px; }
+.p_prompt { border-top:1px solid #ea700d; border-bottom:1px solid #ea700d; background:#fdebdd; line-height:20px; text-align:left; padding:10px;}
 /*.teamlist li p { line-height: 120%; box-sizing: border-box; height: 50px; display: table-cell;vertical-align: middle; font-size: 14px; padding-top: 9px; }*/
 .teamlist li p span { display:block; font-size:14px }
 .Information li input { float:right; text-align:right; height:30px; line-height:30px; color:#a5a5a5; width:150px; border:none; }
