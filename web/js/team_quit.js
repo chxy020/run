@@ -28,7 +28,7 @@ PageManager.prototype = {
 	memberData:null,
 	init: function(){
 		this.httpTip = new HttpTip({scope:this});
-		$(window).onbind("load",this.pageLoad,this);
+		//$(window).onbind("load",this.pageLoad,this);
 		$(window).onbind("touchmove",this.pageMove,this);
 		this.bindEvent();
 	},

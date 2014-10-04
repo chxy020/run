@@ -36,7 +36,7 @@ PageManager.prototype = {
 	playData:{},
 	init: function(){
 		this.httpTip = new HttpTip({scope:this});
-		$(window).onbind("load",this.pageLoad,this);
+		//$(window).onbind("load",this.pageLoad,this);
 		$(window).onbind("touchmove",this.pageMove,this);
 		this.bindEvent();
 	},
@@ -46,7 +46,7 @@ PageManager.prototype = {
 		$("#backBtn").onbind("touchend",this.pageBack,this);
 		
 	},
-	pageLoad:function(evt){
+	pageLoad:function(){
 		var w = $(window).width() || 320;
 		//图片按9:5缩放
 		var h = parseInt(5/9 * w);

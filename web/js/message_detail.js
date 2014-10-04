@@ -23,7 +23,7 @@ PageManager.prototype = {
 	//消息数据
 	messageData:null,
 	init: function(){
-		$(window).onbind("load",this.pageLoad,this);
+		//$(window).onbind("load",this.pageLoad,this);
 		$(window).onbind("touchmove",this.pageMove,this);
 		this.bindEvent();
 	},
@@ -32,7 +32,7 @@ PageManager.prototype = {
 		$("#backBtn").onbind("touchstart",this.btnDown,this);
 		$("#backBtn").onbind("touchend",this.pageBack,this);
 	},
-	pageLoad:function(evt){
+	pageLoad:function(){
 		var w = $(window).width();
 		var h = $(window).height();
 		//this.ratio = window.devicePixelRatio || 1;

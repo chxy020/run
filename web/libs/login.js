@@ -56,6 +56,34 @@
 			},100);
 		}
 	}
+
+	//刷新页面,ios返回不会刷新
+	window.pageLoad = function(){
+		initLoadPage();
+	};
+
+	//回调计数,超过10次就不回调了
+	var j = 0;
+	function initLoadPage(){
+		if(Base.page != null){
+			if(typeof Base.page.pageLoad == "function"){
+				Base.page.pageLoad();
+			}
+			else{
+				if(j < 10){
+					j++;
+					setTimeout(function(){
+						initLoadPage();
+					},100);
+				}
+			}
+		}
+		else{
+			setTimeout(function(){
+				initLoadPage();
+			},100);
+		}
+	}
 }(window));
 
 /*
@@ -83,7 +111,9 @@ $(function(){
 	//window.callbackInit('{"bid":"1","gid":"2","groupname":"CCC","isbaton":"0","isleader":"1","nickname":"13122233305","uid":"5","username":"","userphoto":"/image/20140916/120_EBFA23903D7E11E4A6869FF80F14043D.jpg"}','{"etime":"","mid":"1","stime":""}','{"deviceid":"99000314911470","platform":"android"}','http://182.92.97.144:8080/')
 	//window.callbackInit('{"bid":"","gid":"","groupname":"","isbaton":"0","isleader":"0","nickname":"","uid":"","username":"","userphoto":""}','{"etime":"","mid":1,"stime":""}','{"deviceid":"99000314911470","platform":"android"}','http://182.92.97.144:8080/')
 	//window.callbackInit('{"bid":"1","gid":"2","groupname":"要跑一队","isbaton":"0","isleader":"1","nickname":"13122233305","uid":5,"username":"","userphoto":"/image/20140916/120_EBFA23903D7E11E4A6869FF80F14043D.jpg"}','{"etime":"","mid":1,"stime":""}','{"deviceid":"99000314911470","platform":"android"}','http://182.92.97.144:8080/','http://yaopaotest.oss-cn-beijing.aliyuncs.com')
-	window.callbackInit('{\"uid\":\"3\",\"bid\":\"1\",\"gid\":\"1\",\"username\":\"\",\"nickname\":\"13122233303\",\"groupname\":\"AAA\",\"userphoto\":\"/image/20140916/120_EBFA23903D7E11E4A6869FF80F14043D.jpg\",\"isleader\":\"1\",\"isbaton\":\"1\"}','{\"mid\":\"1\",\"stime\":\"\",\"etime\":\"\"}','{\"deviceid\":\"1CF4A942-04BC-4579-832A-CB27F6BBF206\",\"platform\":\"ios\"}','http://182.92.97.144:8080/','http://yaopaotest.oss-cn-beijing.aliyuncs.com')
+	//window.callbackInit('{\"uid\":\"3\",\"bid\":\"1\",\"gid\":\"1\",\"username\":\"\",\"nickname\":\"13122233303\",\"groupname\":\"AAA\",\"userphoto\":\"/image/20140916/120_EBFA23903D7E11E4A6869FF80F14043D.jpg\",\"isleader\":\"1\",\"isbaton\":\"1\"}','{\"mid\":\"1\",\"stime\":\"\",\"etime\":\"\"}','{\"deviceid\":\"1CF4A942-04BC-4579-832A-CB27F6BBF206\",\"platform\":\"ios\"}','http://182.92.97.144:8080/','http://yaopaotest.oss-cn-beijing.aliyuncs.com')
+	window.callbackInit('{"bid":"1","gid":"2","groupname":"要跑一队","isbaton":"0","isleader":"1","nickname":"13122233305","uid":5,"username":"","userphoto":"/image/20140916/120_EBFA23903D7E11E4A6869FF80F14043D.jpg"}','{"etime":"","mid":1,"stime":""}','{"deviceid":"99000314911470","platform":"android"}','http://182.92.97.144:8080/','http://yaopaotest.oss-cn-beijing.aliyuncs.com')
+
 });
 */
 
