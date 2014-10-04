@@ -76,16 +76,13 @@ PageManager.prototype = {
 	 * 选择队员设置
 	*/
 	itemUp:function(evt){
-		evt.preventDefault();
 		var ele = evt.currentTarget;
 		var dom = $(ele);
-		dom.addClass("curr");
-
-		setTimeout(function(){
-			dom.removeClass("curr");
+		dom.removeClass("curr");
+		if(!this.moved){
 			$("#memberList > li").removeClass("curr_d");
 			dom.addClass("curr_d");
-		},Base.delay);
+		}
 	},
 
 	/*
@@ -258,10 +255,10 @@ PageManager.prototype = {
 				}
 			}
 
-			$("#memberList").append(ul.join(''));
+			$("#memberList").html(ul.join(''));
 
-			$("#memberList > li").onbind("click",this.itemUp,this);
-
+			$("#memberList > li").onbind("touchstart",this.btnDown,this);
+			$("#memberList > li").onbind("touchend",this.itemUp,this);
 			this.initiScroll();
 		}
 	},

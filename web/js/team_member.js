@@ -52,7 +52,6 @@ PageManager.prototype = {
 		Base.pageBack(-1);
 	},
 	pageMove:function(evt){
-		evt.preventDefault();
 		this.moved = true;
 	},
 	
@@ -262,7 +261,7 @@ PageManager.prototype = {
 				ul.push(li.join(''));
 			}
 
-			$("#memberList").append(ul.join(''));
+			$("#memberList").html(ul.join(''));
 			this.initiScroll();
 		}
 	},
