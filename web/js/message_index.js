@@ -223,13 +223,13 @@ PageManager.prototype = {
 				var annid = list.annid || "";
 				//标题
 				var title = list.title || "";
-				//未读/已读 1未读/0已读
+				//未读/已读 0未读/1已读
 				var isread = list.isread - 0 || 0;
 				//添加时间
 				var addtime = list.addtime || "";
 				//发送来源
 				var sendname = list.sendname || "";
-				if(isread == 1){
+				if(isread == 0){
 					li.push('<li id="' + annid + '" class="w">');
 				}
 				else{
