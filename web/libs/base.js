@@ -51,7 +51,7 @@
 		me.unbind(evtName);
 		me.on(evtName, function(evt) {
 			fn.apply(scope, [evt, me, data]);
-			return false;
+			//return false;
 		});
 
 		//获得兼容PC事件名称

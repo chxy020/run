@@ -22,6 +22,37 @@
 		#pageBtn .curr{
 			background: #C0B9B9;
 		}
+		#wrapper {
+			position: absolute;
+			z-index: 1;
+			top: 45px;
+			bottom: 0px;
+			left: 0;
+			width: 100%;
+			overflow: hidden;
+		}
+
+		#scroller {
+			position: absolute;
+			z-index: 1;
+			-webkit-tap-highlight-color: rgba(0,0,0,0);
+			width: 100%;
+			-webkit-transform: translateZ(0);
+			-moz-transform: translateZ(0);
+			-ms-transform: translateZ(0);
+			-o-transform: translateZ(0);
+			transform: translateZ(0);
+			-webkit-touch-callout: none;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+			-webkit-text-size-adjust: none;
+			-moz-text-size-adjust: none;
+			-ms-text-size-adjust: none;
+			-o-text-size-adjust: none;
+			text-size-adjust: none;
+		}
 	</style>
 </head>
 <body>
@@ -29,33 +60,38 @@
 		<div id="backBtn" class="tbtn-l"></div>
 		<div class="header_text">系统消息</div>
 	</div>
-	<ul id="messageList" class="xtlist">
-		<!--
-		<li>
-			<h3>系统消息的内容，过长的内容，过长的内容，过长的内容，过长加</h3>
-			<p>2014-8-10 15:49</p>
-			<span class="jt">右箭头</span>
-		</li>
-		<li class="curr">
-			<h3>按时间排序</h3>
-			<p>2014-8-10 15:49</p>
-			<span class="jt">右箭头</span>
-		</li>
-		<li class="w">
-			<h3>未读消息状态底色不同</h3>
-			<p>2014-8-10 15:49</p>
-			<span class="jt">右箭头</span>
-		</li>
-		<li>
-			<h3>未读消息状态底色不同</h3>
-			<p>2014-8-10 15:49</p>
-			<span class="jt">右箭头</span>
-		</li>
-		-->
-	</ul>
-	<div id="pageBtn" style="display:none;">点击加载下一页</div>
 
-	<script type="text/javascript" src="libs/iscroll5.js"></script>
+	<div id="wrapper">
+		<div id="scroller">
+			<ul id="messageList" class="xtlist">
+				<!--
+				<li>
+					<h3>系统消息的内容，过长的内容，过长的内容，过长的内容，过长加</h3>
+					<p>2014-8-10 15:49</p>
+					<span class="jt">右箭头</span>
+				</li>
+				<li class="curr">
+					<h3>按时间排序</h3>
+					<p>2014-8-10 15:49</p>
+					<span class="jt">右箭头</span>
+				</li>
+				<li class="w">
+					<h3>未读消息状态底色不同</h3>
+					<p>2014-8-10 15:49</p>
+					<span class="jt">右箭头</span>
+				</li>
+				<li>
+					<h3>未读消息状态底色不同</h3>
+					<p>2014-8-10 15:49</p>
+					<span class="jt">右箭头</span>
+				</li>
+				-->
+			</ul>
+			<div id="pageBtn" style="display:none;">点击加载下一页</div>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="libs/iscroll.js"></script>
 	<script type="text/javascript" src="libs/zepto.js"></script>
 	<script type="text/javascript" src="libs/gmu.js"></script>
 	<script type="text/javascript" src="libs/base.js"></script>

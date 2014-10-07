@@ -135,25 +135,8 @@ PageManager.prototype = {
 	*/
 	initiScroll:function(){
 		if(this.iScrollY == null){
-			/*
-			//动态调整滚动插件宽高,
-			var w = this.bodyWidth;
-			//console.log(w)
-			// var h = this.bodyHeight + "px";
-			 var iw = w * 3;
-
-			//this.iScroller[0].style.cssText = "";
-			$("#viewport").css({"width":w + "px"});
-			$("#scroller").css({"width":iw + "px"});
-			$(".slide").css({"width":w + "px"});
-			$(".scroller").css({"width":w + "px"});
-			*/
-			this.iScrollY = new IScroll('#wrapper', {
-				scrollbars: true,
-				mouseWheel: true,
-				interactiveScrollbars: true,
-				shrinkScrollbars: 'scale',
-				fadeScrollbars: true
+			this.iScroll = new iScroll('wrapper',{
+				vScrollbar : false
 			});
 		}
 		else{
@@ -218,17 +201,17 @@ PageManager.prototype = {
 			var ul = [];
 			for(var i = 0,len = data.length; i < len; i++){
 				var li = [];
-				var list = data[i];
+				var list = data[i] || {};
 				//消息ID
 				var annid = list.annid || "";
 				//标题
-				var title = list.title || "";
+				var title = list.title || "消息标题";
 				//未读/已读 0未读/1已读
 				var isread = list.isread - 0 || 0;
 				//添加时间
 				var addtime = list.addtime || "";
 				//发送来源
-				var sendname = list.sendname || "";
+				var sendname = list.sendname || "要跑";
 				if(isread == 0){
 					li.push('<li id="' + annid + '" class="w">');
 				}
@@ -248,7 +231,7 @@ PageManager.prototype = {
 			else{
 				$("#messageList").append(ul.join(''));
 			}
-			//this.initiScroll();
+			
 
 			//注销消息事件
 			$("#messageList > li").rebind("touchstart",this.btnDown,this);
@@ -257,6 +240,8 @@ PageManager.prototype = {
 			if(data.length == 30){
 				$("#pageBtn").show();
 			}
+
+			this.initiScroll();
 		}
 	},
 
